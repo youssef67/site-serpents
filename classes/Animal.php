@@ -4,39 +4,36 @@ namespace classes;
 
 class Animal
 {
-    private String $nom;
-    private Race $race;
-    private bool $genre;
-    private int $dureeDeVie;
-    private \DateTime $dateNaissance;
+    public $conn;
+    private $table = "animals";
+    private $id = "";
 
-    /**
-     * @param String $nom
-     * @param Race $race
-     * @param bool $genre
-     * @param int $dureeDeVie
-     * @param \DateTime $dateNaissance
-     */
-    public function __construct(string $nom, Race $race, bool $genre, int $dureeDeVie, \DateTime $dateNaissance)
+    public function __construct($myid = "vide")
     {
-        $this->nom = $nom;
-        $this->race = $race;
-        $this->genre = $genre;
-        $this->dureeDeVie = $dureeDeVie;
-        $this->dateNaissance = $dateNaissance;
+        $this->conn = new Bdd();
+        if ($myid != "vide" && $myid != "new") $this->id = $myid;
+        if ($myid == "new") {
+            $this->id = $this->conn->create($this->table);
+        }
     }
 
-    public function getNom(): string { return $this->nom; }
-    public function getRace(): Race { return $this->race; }
-    public function getDureeDeVie(): int { return $this->dureeDeVie; }
-    public function getDateNaissance(): \DateTime { return $this->dateNaissance; }
+    public function selectAll() {
+        return $this->conn->execRequest("SELECT * FROM `" . $this->table . "`");
+    }
 
-    public function isMale(): bool { return $this->genre; }
-    public function setNom(string $nom): void { $this->nom = $nom; }
-    public function setRace(Race $race): void { $this->race = $race; }
-    public function setGenre(bool $genre): void { $this->genre = $genre; }
-    public function setDureeDeVie(int $dureeDeVie): void { $this->dureeDeVie = $dureeDeVie; }
-    public function setDateNaissance(\DateTime $dateNaissance): void { $this->dateNaissance = $dateNaissance; }
+    public function selectOne($col) {
+        return $this->conn->select($this->table, $this->id, $col);
+    }
+
+    public function set($col, $value) {
+        return $this->conn->update($this->table, $this->id, $col, $value);
+    }
+
+
+
+
+
+
 
 
 
