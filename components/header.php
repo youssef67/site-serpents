@@ -1,6 +1,6 @@
 <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Ma ferme à serpents</a>
+        <a class="navbar-brand" href="index.php">Ma ferme à serpents</a>
         <button
             class="navbar-toggler"
             type="button"
