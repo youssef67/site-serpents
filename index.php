@@ -17,9 +17,8 @@
 <div class="content">
     <?php
 
-    if ($_SERVER['REQUEST_METHOD'] == "GET" && !empty($_GET["page"])) {
+    if ($_SERVER['REQUEST_METHOD'] == "GET" && !empty($_GET["page"]))
         $fileimport = "pages/" . $_GET["page"] . ".php";
-    }
     else
         $fileimport = "pages/home.php";
 

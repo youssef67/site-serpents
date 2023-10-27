@@ -1,6 +1,8 @@
 <?php
 
 namespace classes;
+use PDO;
+
 class Bdd
 {
     private \PDO $conn;
@@ -18,7 +20,7 @@ class Bdd
         if ($typeRequest == "INSERT" || $typeRequest == "UPDATE" || $typeRequest == "SELECT") {
             $res = $this->conn->query($req);
 
-            if($typeRequest == "SELECT") $res = $res->fetchAll();
+            if($typeRequest == "SELECT") $res = $res->fetchAll(PDO::FETCH_ASSOC);
             if($typeRequest == "INSERT") $res = $this->conn->lastInsertId();
 
             return $res;

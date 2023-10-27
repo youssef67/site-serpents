@@ -5,7 +5,7 @@ namespace classes;
 class Animal
 {
     public $conn;
-    private $table = "animals";
+    private $table = "Animals";
     private $id = "";
 
     public function __construct($myid = "vide")

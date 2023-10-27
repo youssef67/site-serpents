@@ -5,7 +5,7 @@ namespace classes;
 class Race
 {
     public $conn;
-    private $table = "races";
+    private $table = "Races";
     private $id = "";
 
 
@@ -15,6 +15,12 @@ class Race
         if($myid = "new") $this->id = $this->conn->create($this->table);
     }
 
+    public static function getRace($id) {
+        $conn = new Bdd();
+
+        $res =  $conn->execRequest("SELECT `nom_race` FROM `Races` WHERE `id_race` = " . $id);
+        return $res[0]["nom_race"];
+    }
     public function selectAll()
     {
        return $this->conn->select("SELECT * FROM `" . $this->table . "`");
