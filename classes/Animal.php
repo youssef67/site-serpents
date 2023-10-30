@@ -29,6 +29,28 @@ class Animal
         return $this->conn->update($this->table, $this->id, $col, $value);
     }
 
+    public function convertDureeVieEnString ($number) {
+        $secondes = $number;
+
+        $minutes = floor($secondes / 60);
+        $secondes -= $minutes * 60;
+
+        $minutesAvecSouSansS = $minutes > 1 ? " minutes " : "minute";
+
+        $afficheDureeVie = $minutes . $minutesAvecSouSansS;
+
+        if ($secondes > 0) {
+            $secondesAvecSouSansS = $secondes > 1 ? " secondes" : " seconde";
+            $afficheDureeVie .= " et " . $secondes . $secondesAvecSouSansS;
+        }
+
+        return $afficheDureeVie;
+    }
+
+    public function convertPoidsEnKg($number) {
+
+    }
+
 
 
 

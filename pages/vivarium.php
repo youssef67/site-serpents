@@ -14,18 +14,29 @@ $lstAnimal = $a->selectAll();
         <th>Nom</th>
         <th>Race</th>
         <th>genre</th>
-        <th>poids (kg)</th>
-        <th>durée de vie (en minutes)</th>
+        <th>poids</th>
+        <th>durée de vie</th>
         <th>date de naissance</th>
     </tr>
     </thead>
 <tbody>
 
 <?php
-foreach ($lstAnimal as $animal) { ?>
+foreach ($lstAnimal as $animal) {
+
+    ?>
     <tr>
         <td>
-            <?= $animal["nom"] ?>
+            <div class="d-flex align-items-center">
+                <img src="../img/snake-img/<?= $animal["path_img"] ?>"
+                     class="rounded-circle"
+                     alt=""
+                    style="width: 55px; height: 55px"
+                />
+                <div class="ms-3">
+                    <?= $animal["nom"] ?>
+                </div>
+            </div>
         </td>
         <td>
             <?= \classes\Race::getRace($animal["id_race"]) ?>
@@ -34,10 +45,10 @@ foreach ($lstAnimal as $animal) { ?>
             <?= $animal["genre"] == 1 ? "mâle" : "femelle" ?>
         </td>
         <td>
-            <?= $animal["poids"] ?>
+            <?= $animal["poids"] / 1000 . " kg"?>
         </td>
         <td>
-            <?= $animal["duree_vie"] / 60 ?>
+            <?= $a->convertDureeVieEnString($animal["duree_vie"]);  ?>
         </td>
         <td>
             <?= $animal["date_naissance"] ?>
