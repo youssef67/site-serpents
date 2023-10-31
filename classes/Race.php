@@ -5,7 +5,7 @@ namespace classes;
 class Race
 {
     public $conn;
-    private $table = "Races";
+    private $table = "Race";
     private $id = "";
 
 
@@ -18,7 +18,7 @@ class Race
     public static function getRace($id) {
         $conn = new Bdd();
 
-        $res =  $conn->execRequest("SELECT `nom_race` FROM `Races` WHERE `id_race` = " . $id);
+        $res =  $conn->execRequest("SELECT `nom_race` FROM `Race` WHERE `id_race` = " . $id);
         return $res[0]["nom_race"];
     }
     public function selectAll()

@@ -2,11 +2,13 @@
 
 namespace classes;
 
+use IntlDateFormatter;
+
 class Animal
 {
     public $conn;
-    private $table = "Animals";
-    private $id = "";
+    private $table = "Animal";
+    public $id = "";
 
     public function __construct($myid = "vide")
     {
@@ -47,8 +49,19 @@ class Animal
         return $afficheDureeVie;
     }
 
-    public function convertPoidsEnKg($number) {
+    public function convertDateNaissanceToDateTime($chaine) {
 
+        $date = new \DateTime();
+        $timeStamp = strtotime($chaine);
+        $date->setTimestamp($timeStamp);
+
+        $parser = new \IntlDateFormatter(
+            'fr_FR',
+            IntlDateFormatter::LONG,
+            IntlDateFormatter::NONE
+        );
+
+        return $parser->format($date);
     }
 
 

@@ -30,12 +30,12 @@ class Bdd
     }
 
     public function create($table) {
-        $request = "INSERT INTO `" . $table . "` (`id_" . $table . "`) VALUES (NULL)";
+        $request = "INSERT INTO `" . $table . "` (`id_" . strtolower($table) . "`) VALUES (NULL)";
         return $this->execRequest($request);
     }
 
     public function update($table, $id, $col, $value) {
-        $request = "UPDATE `" . $table . "` SET `" . $col . "` = `" . addslashes($value) . "` WHERE `id_" . $table . "` = " . $id;
+        $request = "UPDATE `" . $table . "` SET `" . $col . "` = '" . addslashes($value) . "' WHERE `id_" . $table . "` = " . $id;
         $this->execRequest($request);
     }
 

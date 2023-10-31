@@ -8,6 +8,7 @@ $lstAnimal = $a->selectAll();
 
 ?>
 
+<a type="button" class="btn btn-primary" href="index.php?page=updtSnake&id=new">Ajouter un serpent</a>
 <table class="table align-middle mb-0 bg-white">
     <thead class="bg-light">
     <tr>
@@ -23,7 +24,6 @@ $lstAnimal = $a->selectAll();
 
 <?php
 foreach ($lstAnimal as $animal) {
-
     ?>
     <tr>
         <td>
@@ -51,7 +51,7 @@ foreach ($lstAnimal as $animal) {
             <?= $a->convertDureeVieEnString($animal["duree_vie"]);  ?>
         </td>
         <td>
-            <?= $animal["date_naissance"] ?>
+            <?= $a->convertDateNaissanceToDateTime($animal["date_naissance"]); ?>
         </td>
     </tr>
 <?php } ?>
