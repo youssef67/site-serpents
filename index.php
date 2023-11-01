@@ -27,7 +27,7 @@
     if (file_exists($fileimport))
         include "$fileimport";
     else
-        echo "Page n'existe pas";
+        echo "Cette page n'existe pas";
 
 
     ?>

@@ -42,12 +42,21 @@ class Bdd
     public function select($table, $id, $col) {
         $request = "SELECT `" . $col . "` FROM `" . $table . "` WHERE `id_" . $table . "` = " . $id;
         $res = $this->execRequest($request);
-        return stripslashes($res[0][0]);
+
+        $resStripSlashes = $res[0][$col] != null ? stripslashes($res[0][$col]) : $res[0][$col];
+        return $resStripSlashes;
     }
 
     public function delete($table, $id) {
         $request = "DELETE FROM `" . $table . "` WHERE `id_" . $table . "` = " . $id;
         $this->conn->query($request);
     }
+
+    public function deleteEntriesNull($table, $col) {
+        $request = "DELETE FROM `" . $table . "` WHERE `" . $col . "` IS NULL";
+        $this->conn->query($request);
+    }
+
+
 
 }

@@ -8,7 +8,7 @@ class Animal
 {
     public $conn;
     private $table = "Animal";
-    public $id = "";
+    private $id = "";
 
     public function __construct($myid = "vide")
     {
@@ -23,12 +23,16 @@ class Animal
         return $this->conn->execRequest("SELECT * FROM `" . $this->table . "`");
     }
 
-    public function selectOne($col) {
+    public function get($col) {
         return $this->conn->select($this->table, $this->id, $col);
     }
 
     public function set($col, $value) {
         return $this->conn->update($this->table, $this->id, $col, $value);
+    }
+
+    public function deleteEntriesNull() {
+        $this->conn->deleteEntriesNull($this->table, "genre");
     }
 
     public function convertDureeVieEnString ($number) {

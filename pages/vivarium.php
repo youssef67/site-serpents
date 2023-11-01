@@ -4,6 +4,8 @@ require_once("classes/Animal.php");
 require_once("classes/Race.php");
 
 $a = new \classes\Animal();
+
+$a->deleteEntriesNull();
 $lstAnimal = $a->selectAll();
 
 ?>
@@ -14,10 +16,11 @@ $lstAnimal = $a->selectAll();
     <tr>
         <th>Nom</th>
         <th>Race</th>
-        <th>genre</th>
-        <th>poids</th>
-        <th>durée de vie</th>
-        <th>date de naissance</th>
+        <th>Genre</th>
+        <th>Poids</th>
+        <th>Durée de vie</th>
+        <th>Date de naissance</th>
+        <th>Actions</th>
     </tr>
     </thead>
 <tbody>
@@ -52,6 +55,10 @@ foreach ($lstAnimal as $animal) {
         </td>
         <td>
             <?= $a->convertDateNaissanceToDateTime($animal["date_naissance"]); ?>
+        </td>
+        <td>
+            <a type="button" class="btn btn-warning" href="../index.php?page=updtSnake&id=<?= $animal["id_animal"] ?>">Modifier</a>
+            <a type="button" class="btn btn-danger">Supprimer</a>
         </td>
     </tr>
 <?php } ?>
