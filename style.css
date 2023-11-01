@@ -1,15 +1,13 @@
 body {
     padding: 0;
-
 }
 
-.content {
-    height: 100vh;
+.content-home {
+    min-height: 600px;
 }
 
-.main-menu {
-    height: 50%;
-}
+
+
 
 
 
