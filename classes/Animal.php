@@ -35,6 +35,11 @@ class Animal
         $this->conn->deleteEntriesNull($this->table, "genre");
     }
 
+    public function selectAllCount($col, $value) {
+        $res = $this->conn->execRequest("SELECT COUNT(*) AS nbSnake FROM `" . $this->table . "` WHERE `" . $col . "` LIKE " . $value);
+        return $res[0]["nbSnake"];
+    }
+
     public function convertDureeVieEnString ($number) {
         $secondes = $number;
 

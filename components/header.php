@@ -2,7 +2,11 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <img src="../img/others/logo.png"
+                 class="rounded-circle"
+                 alt=""
+                 style="width: 50px; height: 50px"
+            />
             <button
                     class="navbar-toggler"
                     type="button"
@@ -28,6 +32,13 @@
                         <a class="nav-link" href="index.php?page=cimetiere">Cimetière</a>
                     </li>
                 </ul>
+                <?php if(isset($_REQUEST["page"]) && $_REQUEST["page"] == "vivarium") { ?>
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link"  href="index.php?page=updtSnake&id=new">Créer un nouveau Serpent</a>
+                        </li>
+                    </ul>
+                <?php } ?>
             </div>
         </div>
     </nav>

@@ -76,7 +76,7 @@ $races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
                       </div>
                   </div>
                   <div class="col">
-                      <select class="form-select" aria-label="Default select example" name="id_race">
+                      <select class="form-select" aria-label="select race" name="id_race">
                           <option selected>Veuillez choisir une race</option>
                           <?php foreach ($races as $race) { ?>
                               <option
@@ -96,10 +96,10 @@ $races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
                       </div>
                   </div>
                   <div class="col">
-                      <select class="form-select" aria-label="Default select example" name="genre">
+                      <select class="form-select" aria-label="select sexe" name="genre">
                           <option <?= $s->get("genre") == null ? "selected" : ""?>>Veuillez choisir le sexe</option>
-                          <option <?= $s->get("genre") == 0 ? "selected" : ""?> value="0">Femelle</option>
-                          <option <?= $s->get("genre") == 1 ? "selected" : ""?> value="1">Mâle</option>
+                          <option <?= $s->get("genre") == 1 ? "selected" : ""?> value="1">Femelle</option>
+                          <option <?= $s->get("genre") == 2 ? "selected" : ""?> value="2">Mâle</option>
                       </select>
                   </div>
               </div>

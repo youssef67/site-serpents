@@ -7,6 +7,72 @@ body {
 }
 
 
+/* Input style pour la recherche via les filtre*/
+
+.input {
+    height: 35px;
+    margin-bottom: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    border-radius: 4px;
+    border: 2px solid #fff;
+    background-color: transparent;
+}
+
+.input-gradient {
+    border-color: #fff; /* fallback */
+    border-image: linear-gradient(-45deg, #3498db, #e67e22) 1
+}
+
+.btn-filter {
+    flex: 1 1 auto;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    /* text-shadow: 0px 0px 10px rgba(0,0,0,0.2);*/
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+}
+
+.btn-filter:hover {
+    background-position: right center; /* change the direction of the change here */
+}
+
+.btn-gradient {
+    background-image: linear-gradient(to right, #f6d365 0%, #fda085 51%, #f6d365 100%);
+}
+
+/* Titre style*/
+.fancy {
+    --b: 6px;   /* control the border thickness */
+    --w: 80px;  /* control the width of the line*/
+    --g: 15px;  /* control the gap */
+    --c: #0B486B;
+
+    width: fit-content;
+    padding: 0 1em;
+    line-height: 1.6em;
+    border: 1px solid;
+    color: #fff;
+    background:
+            conic-gradient(from   45deg at left ,var(--c) 25%,#0000 0) 0,
+            conic-gradient(from -135deg at right,var(--c) 25%,#0000 0) 100%;
+    background-size: 51% 100%;
+    background-origin: border-box;
+    background-repeat: no-repeat;
+    border-image:
+            linear-gradient(
+                    #0000      calc(50% - var(--b)/2),
+                    var(--c) 0 calc(50% + var(--b)/2),
+                    #0000    0)
+            1/0 var(--w)/calc(var(--w) + var(--g));
+    margin-inline: auto;
+}
+
+
 
 
 
