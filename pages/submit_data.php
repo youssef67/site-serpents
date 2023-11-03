@@ -1,5 +1,7 @@
 <?php
 require("../classes/Bdd.php");
+require_once("../classes/Race.php");
+
 
 $connAjax = new \classes\Bdd();
 
@@ -48,8 +50,26 @@ if (empty($name) && empty($race) && empty($genre))
     //Concaténation de la chaine avec la requete SQL
     $request = 'SELECT * FROM Animal WHERE ' . $whereValues;
 
-    $res = $connAjax->execRequest($request);
+    $animals = $connAjax->execRequest($request);
 
-    var_dump($res);
-
+    foreach ($animals as $animal) {
+        echo
+        "<tr>
+            <td>
+                <div class='d-flex align-items-center'>
+                    <img src='../img/snake-img/" . $animal["path_img"] . "'" .
+                        "class='rounded-circle'
+                        alt=''
+                        style='width: 55px; height: 55px'
+                    />
+                    <div class='ms-3'>"
+                    . $animal["nom"] .
+                "</div>
+                </div>
+            </td>
+            <td>" .
+            \classes\Race::getRace($animal["id_race"]) .
+        "</td>
+        </tr>";
+    }
 }
