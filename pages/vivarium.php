@@ -60,13 +60,17 @@ $races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
 <!-- Recherche par nom -->
 <!-- Recherche par genre -->
 <!-- Recherche par race -->
-<div id="response_message"></div>
     <div class="row text-center mt-5 ">
         <h3 class="col-2 fancy">
             Liste des serpents
         </h3>
     </div>
-    <form id="formFilters" enctype="multipart/form-data">
+    <form id="formFilters" enctype="multipart/form-data" name="formFilter">
+        <div class="row mt-5 text-center" style="display: none" id="error-filters">
+            <div class="alert alert-warning col-md-6 offset-md-3" role="alert">
+                Merci d'indiquer au moins un critère de recherche
+            </div>
+        </div>
         <div class="row mt-5">
             <div class="col"></div>
             <div class="col">
@@ -91,15 +95,14 @@ $races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
                 </select>
             </div>
             <div class="col">
-                <button type="button" onclick="submitFormAjax()" class="btn-filter btn-gradient form-control">Rechercher</button>
+                <button type="button" onclick="return validateForm()" class="btn-filter btn-gradient form-control">Rechercher</button>
             </div>
             <div class="col"></div>
         </div>
     </form>
 
-
 <!-- Début de la liste des serpents-->
-<table class="table align-middle mb-0 bg-white card-body p-5 text-center">
+<table class="table align-middle mb-0 bg-white card-body p-5 text-center" id="lstSnakes">
     <thead class="bg-light">
     <tr>
         <th>Nom</th>

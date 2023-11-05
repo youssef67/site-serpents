@@ -1,10 +1,23 @@
-console.log('toto')
-
 var validationModification = document.querySelector(".update");
 
 setTimeout(function () {
     validationModification.style.display = "none";
 }, 3000)
+
+//Validation form
+function validateForm() {
+    var nom = document.forms["formFilter"]["nom"].value;
+    var race = document.forms["formFilter"]["id_race"].value;
+    var genre = document.forms["formFilter"]["genre"].value;
+
+    if (nom == '' && race == "Rechercher par race" && genre == "Rechercher par genre") {
+        document.getElementById("error-filters").style.display = "block";
+    } else {
+        document.getElementById("error-filters").style.display = "none";
+        submitFormAjax();
+    }
+}
+
 
 //-------------------------------------------------------------------------//
 // Request Ajax
@@ -23,7 +36,8 @@ function submitFormAjax() {
     xmlhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200)
         {
-            document.getElementById("response_message").innerHTML = this.responseText;
+            console.log(this.responseText);
+            document.getElementById("lstSnakes").innerHTML = this.responseText;
         }
     }
 
