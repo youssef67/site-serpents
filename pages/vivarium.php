@@ -1,11 +1,10 @@
 <?php
-require("classes/Bdd.php");
+require_once("classes/Bdd.php");
 require_once("classes/Race.php");
 require_once("classes/Animal.php");
 
 $a = new \classes\Animal();
 $conn = new \classes\Bdd();
-
 
 $a->deleteEntriesNull();
 $lstAnimal = $a->selectAll();
@@ -105,12 +104,12 @@ $races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
 <table class="table align-middle mb-0 bg-white card-body p-5 text-center" id="lstSnakes">
     <thead class="bg-light">
     <tr>
-        <th>Nom</th>
-        <th>Race</th>
-        <th>Genre</th>
-        <th>Poids</th>
-        <th>Durée de vie</th>
-        <th>Date de naissance</th>
+        <th>Nom <img onclick="triColonne(type = 'nom', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triNom"/></th>
+        <th>Race <img onclick="triColonne(type = 'id_race', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triRace"></th>
+        <th>Genre <img onclick="triColonne(type = 'genre', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triGenre"></th>
+        <th>Poids <img onclick="triColonne(type = 'poids', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triPoids"></th>
+        <th>Durée de vie <img onclick="triColonne(type = 'duree_vie', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triVie"></th>
+        <th>Date de naissance <img onclick="triColonne(type = 'date_naissance', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triNaissance"></th>
         <th>Actions</th>
     </tr>
     </thead>

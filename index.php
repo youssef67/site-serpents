@@ -13,13 +13,10 @@
 <body class="container-fluid">
 <?php include "components/header.php" ?>
     <?php
-    if (($_SERVER['REQUEST_METHOD'] == "GET" || $_SERVER['REQUEST_METHOD'] == "POST") && !empty($_GET["page"])) {
+    if (($_SERVER['REQUEST_METHOD'] == "GET" || $_SERVER['REQUEST_METHOD'] == "POST") && !empty($_GET["page"]))
         $fileimport = "pages/" . $_GET["page"] . ".php";
-    }
-    else {
+    else
         $fileimport = "pages/home.php";
-
-    }
 
     if (file_exists($fileimport))
         include "$fileimport";

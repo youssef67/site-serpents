@@ -72,6 +72,15 @@ body {
     margin-inline: auto;
 }
 
+/* Fleche de tri */
+
+.arrow-tri {
+    width: 20px;
+    height: 20px;
+}
+thead img {
+    cursor: pointer;
+}
 
 
 
