@@ -48,12 +48,12 @@ class Bdd
     }
 
     public function delete($table, $id) {
-        $request = "DELETE FROM `" . $table . "` WHERE `id_" . $table . "` = " . $id;
+        $request = "UPDATE `" . $table . "` SET `delete_at` = NOW() WHERE `id_" . $table . "` = " . $id;
         $this->conn->query($request);
     }
 
     public function deleteEntriesNull($table, $col) {
-        $request = "DELETE FROM `" . $table . "` WHERE `" . $col . "` IS NULL";
+        $request = "DELETE FROM `" . $table . "` WHERE `" . $col . "` IS NULL AND delete_at IS NULL";
         $this->conn->query($request);
     }
 

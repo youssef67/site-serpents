@@ -32,6 +32,8 @@ function ajaxListSnake(field = "", extra= "") {
     //Instanciation l'objet REQUEST POST pour la recherche par filtre
     if(field === "filterForm")
         xmlhttp.open("POST", "pages/ajaxListSnake.php", true);
+    else if (field === "resetFormFilter")
+        xmlhttp.open("GET", "pages/ajaxResetListSnake.php", true)
     else {
     //Instanciation l'objet REQUEST GET pour le sorting
         var sorting = true;
@@ -50,17 +52,20 @@ function ajaxListSnake(field = "", extra= "") {
     xmlhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200)
         {
+            if(field === "resetFormFilter")
+                editClassAndIdFormFilter(true)
+            else
+                editClassAndIdFormFilter(false)
+
             document.getElementById("lstSnakes").innerHTML = this.responseText;
 
+            // Si appel au sorting / changement du sens de la flèche
             if (sorting) {
                 var srcAModifier =  document.getElementById(extra.id);
 
                 var oppositeSorting = extra.typeSorting === "DESC" ? "asc" : "desc";
 
                 srcAModifier.src = "./img/others/tri-" + oppositeSorting + ".png"
-
-                console.log(oppositeSorting)
-            //../img/others/tri-desc.png
             }
         }
     }
@@ -75,7 +80,6 @@ function ajaxListSnake(field = "", extra= "") {
     } else {
         xmlhttp.send();
     }
-
 }
 
 //arrow tri
@@ -95,5 +99,50 @@ function triColonne(field, id) {
      if (typeSorting !== "") {
          ajaxListSnake(field, {typeSorting: typeSorting.toUpperCase(), id: id} )
      }
+}
+
+function editClassAndIdFormFilter(btnResetExist) {
+    console.log(btnResetExist)
+    var divFormEmpty = document.querySelectorAll(".inputFilterFormEmpty");
+    var divForm = document.querySelectorAll(".inputFilterForm");
+    var validationFormFilter = document.getElementById("validationFilterForm");
+
+    // Modification des classes si activation du reset ou non
+    for (let div of divFormEmpty) {
+        btnResetExist ? div.className = "col inputFilterFormEmpty" : div.className = "col-1 inputFilterFormEmpty";
+    }
+
+    for (let div of divForm) {
+        btnResetExist ? div.className = "col inputFilterForm" : div.className = "col-2 inputFilterForm";
+    }
+
+    //Idem pour le bouton rechercher
+    if (btnResetExist) {
+        validationFormFilter.className = "col validationFilterForm";
+
+        //Suppression du button reset
+        var btnResetValidation = document.getElementById("resetFilterForm")
+        btnResetValidation.remove()
+    } else {
+        validationFormFilter.className = "col-2 validationFilterForm";
+
+        //Ajout du button reset
+        // 1 - création de la div
+        const divReset = document.createElement('div')
+        divReset.className = "col-2"
+        divReset.id = "resetFilterForm"
+
+        // 2 - création du button
+        const btnReset = document.createElement("button")
+        btnReset.textContent = "Reset"
+        btnReset.type = "button"
+        btnReset.className = "btn-filter btn-gradient form-control"
+        btnReset.onclick = function resetFormFilter() {
+            ajaxListSnake("resetFormFilter");
+        }
+         divReset.appendChild(btnReset);
+
+        validationFormFilter.insertAdjacentElement('afterend', divReset);
+    }
 }
 

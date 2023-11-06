@@ -3,8 +3,6 @@ require("../classes/Bdd.php");
 require_once("../classes/Race.php");
 require("../classes/Animal.php");
 
-
-
 $connAjax = new \classes\Bdd();
 $a = new \classes\Animal();
 
@@ -16,7 +14,7 @@ if (isset($_POST["nom"]) || isset($_POST["id_race"]) || isset($_POST["genre"])) 
 // Création d'un tableau des valeurs passées dans le filtre
     $arr = [];
 
-// Vérification que les valeurs ne sont pas vides et si pas vide, ajout dans le tableau
+// Vérification que les valeurs ne sont pas vides et si pas vide, ajout dans le tableau de travail
     $name = (isset($_POST["nom"]) && !empty($_POST["nom"])) ? $arr["nom"] = htmlspecialchars(trim($_POST["nom"])) : "";
     $race = (isset($_POST["id_race"]) && $_POST["id_race"] != "Rechercher par race") ? $arr["id_race"] = htmlspecialchars(trim($_POST["id_race"])) : "";
     $genre = (isset($_POST["genre"]) && $_POST["genre"] != "Rechercher par genre") ? $arr["genre"] = htmlspecialchars(trim($_POST["genre"])) : "";
@@ -44,7 +42,7 @@ if (isset($_POST["nom"]) || isset($_POST["id_race"]) || isset($_POST["genre"])) 
         $whereValues = implode(" ", $conditions);
 
         //Concaténation de la chaine avec la requete SQL
-        $request = 'SELECT * FROM Animal WHERE ' . $whereValues;
+        $request = 'SELECT * FROM Animal WHERE ' . $whereValues . ' AND delete_at IS NULL';
     }
 }
 

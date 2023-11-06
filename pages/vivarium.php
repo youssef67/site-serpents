@@ -6,11 +6,31 @@ require_once("classes/Animal.php");
 $a = new \classes\Animal();
 $conn = new \classes\Bdd();
 
-$a->deleteEntriesNull();
-$lstAnimal = $a->selectAll();
-
 // Récupération des races disponibles + id correspondant
 $races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
+
+// On determine sur quelle page on se trouve
+if(isset($_GET["nombrePage"]) && !empty($_GET["nombrePage"])) {
+    $currentPage = strip_tags($_GET["nombrePage"]);
+} else {
+    $currentPage = 1;
+}
+
+//Nombre de serpents par page
+$parPage = 5;
+
+// Calcul du nombre de pages nécessaires pour la pagination
+$pages =  ceil($a->selectCountAll() / $parPage);
+
+//Calcul du 1er serpent de la liste
+$premier = ($currentPage * $parPage) - $parPage;
+var_dump($premier);
+
+// Suppresion des entrées crée avec la création d'un serpent
+$a->deleteEntriesNull();
+//Affichage des serpents valides et présent en BDD
+$lstAnimal = $a->selectAll($premier, $parPage);
+
 ?>
 <!-- Mise en place de la bannière afin de confirmer la modification/suppression -->
 <?php if (isset($_GET["done"])) { ?>
@@ -29,7 +49,7 @@ $races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
 <div class="row mt-5 text-center">
     <h3 class="col-3 fancy">
         Actuellement,
-        <?= $a->selectAllCount("genre", 1) + $a->selectAllCount("genre", 2) ?>
+        <?= $a->selectCountAll() ?>
         serpents présents dans la ferme
     </h3>
 </div>
@@ -41,7 +61,7 @@ $races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
              alt=""
              style="width: 120px; height: 120px"
         />
-        <p style="font-weight: bold"><?= $a->selectAllCount("genre", 1)?> femelles </p>
+        <p style="font-weight: bold"><?= $a->selectAllCountByGender("genre", 1)?> femelles </p>
     </div>
     <div class="col-2">
         <img src="../img/others/icons-male.png"
@@ -49,7 +69,7 @@ $races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
              alt=""
              style="width: 120px; height: 120px"
         />
-        <p style="font-weight: bold"><?= $a->selectAllCount("genre", 2)?> mâles</p>
+        <p style="font-weight: bold"><?= $a->selectAllCountByGender("genre", 2)?> mâles</p>
     </div>
     <div class="col-4"></div>
 </div>
@@ -71,11 +91,11 @@ $races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
             </div>
         </div>
         <div class="row mt-5">
-            <div class="col"></div>
-            <div class="col">
+            <div class="col inputFilterFormEmpty"></div>
+            <div class="col inputFilterForm">
                 <input name="nom" type="text" class="input input-gradient form-control" placeholder="Rechercher par nom">
             </div>
-            <div class="col">
+            <div class="col inputFilterForm">
                 <select type="text" class="input input-gradient form-control" name="id_race">
                     <option selected>Rechercher par race</option>
                     <?php foreach ($races as $race) { ?>
@@ -86,17 +106,20 @@ $races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
                     <?php } ?>
                 </select>
             </div>
-            <div class="col">
+            <div class="col inputFilterForm">
                 <select type="text" class="input input-gradient form-control" name="genre">
                     <option selected>Rechercher par genre</option>
                     <option value="1">femelle</option>
                     <option value="2">mâle</option>
                 </select>
             </div>
-            <div class="col">
+            <div class="col" id="validationFilterForm">
                 <button type="button" onclick="return validateForm()" class="btn-filter btn-gradient form-control">Rechercher</button>
             </div>
-            <div class="col"></div>
+<!--            <div class="col-2" id="resetFilterForm">-->
+<!--                <button type="button" onclick="return validateForm()" class="btn-filter btn-gradient form-control">Reset recherche</button>-->
+<!--            </div>-->
+            <div class="col inputFilterFormEmpty"></div>
         </div>
     </form>
 

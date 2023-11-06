@@ -19,8 +19,13 @@ class Animal
         }
     }
 
-    public function selectAll() {
-        return $this->conn->execRequest("SELECT * FROM `" . $this->table . "`");
+    public function selectAll($premier, $parPage) {
+        return $this->conn->execRequest("SELECT * FROM 
+             `" . $this->table . "` 
+             WHERE delete_at IS NULL 
+             ORDER BY `nom` DESC LIMIT " . $premier . ", " . $parPage);
+
+
     }
 
     public function get($col) {
@@ -35,8 +40,14 @@ class Animal
         $this->conn->deleteEntriesNull($this->table, "genre");
     }
 
-    public function selectAllCount($col, $value) {
-        $res = $this->conn->execRequest("SELECT COUNT(*) AS nbSnake FROM `" . $this->table . "` WHERE `" . $col . "` LIKE " . $value);
+    public function selectCountAll() {
+        $res = $this->conn->execRequest("SELECT COUNT(*) AS nbSnake FROM `" . $this->table . "` WHERE delete_at IS NULL");
+        return $res[0]["nbSnake"];
+    }
+    public function selectAllCountByGender($col, $value) {
+        $res = $this->conn->execRequest("SELECT COUNT(*) AS nbSnake 
+                FROM `" . $this->table . "` 
+                WHERE `" . $col . "` LIKE " . $value . " AND delete_at IS NULL");
         return $res[0]["nbSnake"];
     }
 
