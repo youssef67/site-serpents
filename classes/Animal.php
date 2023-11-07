@@ -24,8 +24,6 @@ class Animal
              `" . $this->table . "` 
              WHERE delete_at IS NULL 
              ORDER BY `nom` DESC LIMIT " . $premier . ", " . $parPage);
-
-
     }
 
     public function get($col) {
@@ -44,6 +42,7 @@ class Animal
         $res = $this->conn->execRequest("SELECT COUNT(*) AS nbSnake FROM `" . $this->table . "` WHERE delete_at IS NULL");
         return $res[0]["nbSnake"];
     }
+
     public function selectAllCountByGender($col, $value) {
         $res = $this->conn->execRequest("SELECT COUNT(*) AS nbSnake 
                 FROM `" . $this->table . "` 

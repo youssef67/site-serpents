@@ -18,7 +18,6 @@ function validateForm() {
     }
 }
 
-
 //-------------------------------------------------------------------------//
 // Request Ajax
 //-------------------------------------------------------------------------//
@@ -30,10 +29,25 @@ function ajaxListSnake(field = "", extra= "") {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
     }
     //Instanciation l'objet REQUEST POST pour la recherche par filtre
-    if(field === "filterForm")
+    if(field === "filterForm") {
         xmlhttp.open("POST", "pages/ajaxListSnake.php", true);
-    else if (field === "resetFormFilter")
+
+        // création du button si le btn reset n'existe pas
+        if (document.getElementById("resetFilterForm") === null)
+            editClassAndIdFormFilter(false)
+    }
+    else if (field === "resetFormFilter") {
         xmlhttp.open("GET", "pages/ajaxResetListSnake.php", true)
+        editClassAndIdFormFilter(true)
+    } else if (field === "pagination") {
+        var dataPagination = {
+            nextPage: extra
+        }
+
+        var queryString = Object.keys(dataPagination).map(key => key + '=' + encodeURIComponent(dataPagination[key])).join('&');
+
+        xmlhttp.open("GET", "pages/ajaxPagination.php?" + queryString, true)
+    }
     else {
     //Instanciation l'objet REQUEST GET pour le sorting
         var sorting = true;
@@ -52,15 +66,14 @@ function ajaxListSnake(field = "", extra= "") {
     xmlhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200)
         {
-            if(field === "resetFormFilter")
-                editClassAndIdFormFilter(true)
-            else
-                editClassAndIdFormFilter(false)
-
             document.getElementById("lstSnakes").innerHTML = this.responseText;
+
+
 
             // Si appel au sorting / changement du sens de la flèche
             if (sorting) {
+                //editClassAndIdFormFilter(true)
+
                 var srcAModifier =  document.getElementById(extra.id);
 
                 var oppositeSorting = extra.typeSorting === "DESC" ? "asc" : "desc";
@@ -84,7 +97,6 @@ function ajaxListSnake(field = "", extra= "") {
 
 //arrow tri
 function triColonne(field, id) {
-    console.log(field)
      var fileSrcImg = document.getElementById(id).src;
 
      var segments = fileSrcImg.split("/");
@@ -102,7 +114,6 @@ function triColonne(field, id) {
 }
 
 function editClassAndIdFormFilter(btnResetExist) {
-    console.log(btnResetExist)
     var divFormEmpty = document.querySelectorAll(".inputFilterFormEmpty");
     var divForm = document.querySelectorAll(".inputFilterForm");
     var validationFormFilter = document.getElementById("validationFilterForm");

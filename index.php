@@ -1,3 +1,10 @@
+<?php
+session_start();
+
+$_SESSION["nom"] = "youssef";
+
+?>
+
 <!doctype html>
 <html lang="fr">
 <head>

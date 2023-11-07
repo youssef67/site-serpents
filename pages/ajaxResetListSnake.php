@@ -1,4 +1,5 @@
 <?php
+session_start();
 require("../classes/Bdd.php");
 require_once("../classes/Race.php");
 require("../classes/Animal.php");
@@ -6,10 +7,13 @@ require("../classes/Animal.php");
 $connAjax = new \classes\Bdd();
 $a = new \classes\Animal();
 
+//Si requete SQL sauvegardée, suppresion de la variable en session
+unset($_SESSION["save_request"]);
+
 // Récupération des races disponibles + id correspondant
 $races = $connAjax->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
 
-$request = 'SELECT * FROM Animal WHERE delete_at IS NULL ORDER BY `nom` DESC LIMIT 0, 10';
+$request = 'SELECT * FROM Animal WHERE delete_at IS NULL ORDER BY `nom` DESC LIMIT 0, 5';
 
 $animals = $connAjax->execRequest($request);
 

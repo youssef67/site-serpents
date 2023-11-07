@@ -1,4 +1,5 @@
 <?php
+session_start();
 require("../classes/Bdd.php");
 require_once("../classes/Race.php");
 require("../classes/Animal.php");
@@ -43,14 +44,18 @@ if (isset($_POST["nom"]) || isset($_POST["id_race"]) || isset($_POST["genre"])) 
 
         //Concaténation de la chaine avec la requete SQL
         $request = 'SELECT * FROM Animal WHERE ' . $whereValues . ' AND delete_at IS NULL';
+        $_SESSION["save_request"] =  $request;
     }
 }
 
 if (isset($_GET["field"]) && isset($_GET["typeSorting"])) {
 
-        $sort = $_GET["field"] . ' '  .$_GET["typeSorting"];
+        $sort = "ORDER BY " . $_GET["field"] . ' '  .$_GET["typeSorting"];
 
-        $request = 'SELECT * FROM Animal ORDER BY '. $sort;
+        if(isset($_SESSION["save_request"]))
+            $request = $_SESSION["save_request"] . ' ' . $sort;
+        else
+            $request = 'SELECT * FROM Animal ORDER BY '. $sort;
 }
 
 $animals = $connAjax->execRequest($request);

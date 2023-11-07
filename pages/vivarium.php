@@ -10,11 +10,7 @@ $conn = new \classes\Bdd();
 $races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
 
 // On determine sur quelle page on se trouve
-if(isset($_GET["nombrePage"]) && !empty($_GET["nombrePage"])) {
-    $currentPage = strip_tags($_GET["nombrePage"]);
-} else {
-    $currentPage = 1;
-}
+//if(!isset($_SESSION["currentPage"])) $_SESSION["currentPage"] = 1;
 
 //Nombre de serpents par page
 $parPage = 5;
@@ -23,8 +19,7 @@ $parPage = 5;
 $pages =  ceil($a->selectCountAll() / $parPage);
 
 //Calcul du 1er serpent de la liste
-$premier = ($currentPage * $parPage) - $parPage;
-var_dump($premier);
+$premier = ($_SESSION["currentPage"] * $parPage) - $parPage;
 
 // Suppresion des entrées crée avec la création d'un serpent
 $a->deleteEntriesNull();
@@ -124,56 +119,83 @@ $lstAnimal = $a->selectAll($premier, $parPage);
     </form>
 
 <!-- Début de la liste des serpents-->
-<table class="table align-middle mb-0 bg-white card-body p-5 text-center" id="lstSnakes">
-    <thead class="bg-light">
-    <tr>
-        <th>Nom <img onclick="triColonne(type = 'nom', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triNom"/></th>
-        <th>Race <img onclick="triColonne(type = 'id_race', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triRace"></th>
-        <th>Genre <img onclick="triColonne(type = 'genre', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triGenre"></th>
-        <th>Poids <img onclick="triColonne(type = 'poids', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triPoids"></th>
-        <th>Durée de vie <img onclick="triColonne(type = 'duree_vie', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triVie"></th>
-        <th>Date de naissance <img onclick="triColonne(type = 'date_naissance', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triNaissance"></th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
+<div id="lstSnakes">
+    <table class="table align-middle mb-0 bg-white card-body p-5 text-center">
+        <thead class="bg-light">
+        <tr>
+            <th>Nom <img onclick="triColonne(type = 'nom', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triNom"/></th>
+            <th>Race <img onclick="triColonne(type = 'id_race', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triRace"></th>
+            <th>Genre <img onclick="triColonne(type = 'genre', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triGenre"></th>
+            <th>Poids <img onclick="triColonne(type = 'poids', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triPoids"></th>
+            <th>Durée de vie <img onclick="triColonne(type = 'duree_vie', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triVie"></th>
+            <th>Date de naissance <img onclick="triColonne(type = 'date_naissance', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triNaissance"></th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
 
-<?php
-foreach ($lstAnimal as $animal) {
-    ?>
-    <tr>
-        <td>
-            <div class="d-flex align-items-center">
-                <img src="../img/snake-img/<?= $animal["path_img"] ?>"
-                     class="rounded-circle"
-                     alt=""
-                    style="width: 55px; height: 55px"
-                />
-                <div class="ms-3">
-                    <?= $animal["nom"] ?>
+    <?php
+    foreach ($lstAnimal as $animal) {
+        ?>
+        <tr>
+            <td>
+                <div class="d-flex align-items-center">
+                    <img src="../img/snake-img/<?= $animal["path_img"] ?>"
+                         class="rounded-circle"
+                         alt=""
+                        style="width: 55px; height: 55px"
+                    />
+                    <div class="ms-3">
+                        <?= $animal["nom"] ?>
+                    </div>
                 </div>
-            </div>
-        </td>
-        <td>
-            <?= \classes\Race::getRace($animal["id_race"]) ?>
-        </td>
-        <td>
-            <?= $animal["genre"] == 2 ? "mâle" : "femelle" ?>
-        </td>
-        <td>
-            <?= $animal["poids"] / 1000 . " kg"?>
-        </td>
-        <td>
-            <?= $a->convertDureeVieEnString($animal["duree_vie"]);  ?>
-        </td>
-        <td>
-            <?= $a->convertDateNaissanceToDateTime($animal["date_naissance"]); ?>
-        </td>
-        <td>
-            <a type="button" class="btn btn-warning" href="../index.php?page=updtSnake&id=<?= $animal["id_animal"] ?>">Modifier</a>
-            <a type="button" class="btn btn-danger" href="../index.php?page=deleteSnake&id=<?= $animal["id_animal"] ?>">Supprimer</a>
-        </td>
-    </tr>
-<?php } ?>
-</tbody>
-</table>
+            </td>
+            <td>
+                <?= \classes\Race::getRace($animal["id_race"]) ?>
+            </td>
+            <td>
+                <?= $animal["genre"] == 2 ? "mâle" : "femelle" ?>
+            </td>
+            <td>
+                <?= $animal["poids"] / 1000 . " kg"?>
+            </td>
+            <td>
+                <?= $a->convertDureeVieEnString($animal["duree_vie"]);  ?>
+            </td>
+            <td>
+                <?= $a->convertDateNaissanceToDateTime($animal["date_naissance"]); ?>
+            </td>
+            <td>
+                <a type="button" class="btn btn-warning" href="../index.php?page=updtSnake&id=<?= $animal["id_animal"] ?>">Modifier</a>
+                <a type="button" class="btn btn-danger" href="../index.php?page=deleteSnake&id=<?= $animal["id_animal"] ?>">Supprimer</a>
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    </table>
+    <div class="row justify-content-md-center mt-3">
+        <div class="col col-lg-2">
+        </div>
+        <nav class="col-md-auto">
+            <ul class="pagination">
+                <!-- Lien vers la page précédente (désactivé si on se trouve sur la 1ère page) -->
+                <li class="page-item <?= ($_SESSION["currentPage"] == 1) ? "disabled" : "" ?>">
+                    <a onclick="ajaxListSnake('pagination', <?=$_SESSION["currentPage"] - 1?>)" class="page-link">Précédente</a>
+                </li>
+                <?php for($page = 1; $page <= $pages; $page++): ?>
+                    <!-- Lien vers chacune des pages (activé si on se trouve sur la page correspondante) -->
+                    <li class="page-item <?= ($_SESSION["currentPage"] == $page) ? "active" : "";    ?>">
+    <!--                    <a href="../index.php?page=vivarium&nbPage=--><?php //= $page ?><!--" class="page-link">--><?php //= $page ?><!--</a>-->
+                        <a onclick="ajaxListSnake('pagination', <?=$page?>)" class="page-link"><?= $page ?></a>
+                    </li>
+                <?php endfor ?>
+                <!-- Lien vers la page suivante (désactivé si on se trouve sur la dernière page) -->
+                <li class="page-item <?= ($_SESSION["currentPage"] == $pages) ? "disabled" : "" ?>">
+                    <a onclick="ajaxListSnake('pagination', <?=$_SESSION["currentPage"] + 1?>)" class="page-link">Suivante</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="col col-lg-2">
+        </div>
+    </div>
+</div>
