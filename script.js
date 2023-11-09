@@ -37,8 +37,8 @@ function ajaxListSnake(field = "", extra= "") {
             editClassAndIdFormFilter(false)
     }
     else if (field === "resetFormFilter") {
-        xmlhttp.open("GET", "pages/ajaxResetListSnake.php", true)
         editClassAndIdFormFilter(true)
+        ajaxListSnake("no_field")
     } else if (field === "pagination") {
         var dataPagination = {
             nextPage: extra
@@ -50,15 +50,20 @@ function ajaxListSnake(field = "", extra= "") {
     }
     else {
     //Instanciation l'objet REQUEST GET pour le sorting
-        var sorting = true;
-        var dataSorting = {
-            field: field,
-            typeSorting: extra.typeSorting
+
+        if (field != "no_field") {
+            var sorting = true;
+            var dataSorting = {
+                field: field,
+                typeSorting: extra.typeSorting
+            }
+
+            var queryString = Object.keys(dataSorting).map(key => key + '=' + encodeURIComponent(dataSorting[key])).join('&');
+
+            xmlhttp.open("GET", "pages/ajaxListSnake.php?" + queryString, true)
+        } else {
+            xmlhttp.open("GET", "pages/ajaxListSnake.php?field=no_field", true)
         }
-
-        var queryString = Object.keys(dataSorting).map(key => key + '=' + encodeURIComponent(dataSorting[key])).join('&');
-
-        xmlhttp.open("GET", "pages/ajaxListSnake.php?" + queryString, true)
     }
 
 
@@ -67,8 +72,6 @@ function ajaxListSnake(field = "", extra= "") {
         if (this.readyState === 4 && this.status === 200)
         {
             document.getElementById("lstSnakes").innerHTML = this.responseText;
-
-
 
             // Si appel au sorting / changement du sens de la flèche
             if (sorting) {
