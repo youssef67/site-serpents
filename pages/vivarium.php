@@ -10,7 +10,7 @@ $conn = new \classes\Bdd();
 $races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
 
 // On determine sur quelle page on se trouve
-//if(!isset($_SESSION["currentPage"])) $_SESSION["currentPage"] = 1;
+if(!isset($_SESSION["currentPage"])) $_SESSION["currentPage"] = 1;
 
 //Nombre de serpents par page
 $parPage = 5;
