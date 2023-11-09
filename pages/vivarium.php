@@ -6,6 +6,9 @@ require_once("classes/Animal.php");
 $a = new \classes\Animal();
 $conn = new \classes\Bdd();
 
+// Suppresion des entrées crée avec la création d'un serpent
+$a->deleteEntriesNull();
+
 // Récupération des races disponibles + id correspondant
 $races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
 
@@ -21,8 +24,6 @@ $pages =  ceil($a->selectCountAll() / $parPage);
 //Calcul du 1er serpent de la liste
 $premier = ($_SESSION["currentPage"] * $parPage) - $parPage;
 
-// Suppresion des entrées crée avec la création d'un serpent
-$a->deleteEntriesNull();
 //Affichage des serpents valides et présent en BDD
 $lstAnimal = $a->selectAll($premier, $parPage);
 

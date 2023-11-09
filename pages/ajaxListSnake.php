@@ -54,9 +54,6 @@ if (isset($_POST["nom"]) || isset($_POST["id_race"]) || isset($_POST["genre"])) 
         $pages =  ceil( $count[0]["nb"] / $parPage);
         $_SESSION["pages"] = $pages;
 
-        //Calcul du 1er serpent de la liste
-        //if(!isset($_SESSION["currentPageFilter"])) $_SESSION["currentPageFilter"] = 1;
-
         $premier = ($_SESSION["currentPage"] * $parPage) - $parPage;
 
         //Concaténation de la chaine avec la requete SQL
@@ -100,8 +97,6 @@ if (isset($_GET["field"]) && isset($_GET["typeSorting"])) {
         else
             $request = $_SESSION["save_request"] . ' ' . $sort;
 }
-
-var_dump($request);
 
 $animals = $connAjax->execRequest($request);
 
