@@ -89,10 +89,10 @@ $lstAnimal = $a->selectAll($premier, $parPage);
         <div class="row mt-5">
             <div class="col inputFilterFormEmpty"></div>
             <div class="col inputFilterForm">
-                <input name="nom" type="text" class="input input-gradient form-control" placeholder="Rechercher par nom">
+                <input name="nom" type="text" class="input input-gradient form-control" placeholder="Rechercher par nom" id="nom_filter">
             </div>
             <div class="col inputFilterForm">
-                <select type="text" class="input input-gradient form-control" name="id_race">
+                <select type="text" class="input input-gradient form-control" name="id_race" id="race_filter">
                     <option selected>Rechercher par race</option>
                     <?php foreach ($races as $race) { ?>
                         <option
@@ -103,7 +103,7 @@ $lstAnimal = $a->selectAll($premier, $parPage);
                 </select>
             </div>
             <div class="col inputFilterForm">
-                <select type="text" class="input input-gradient form-control" name="genre">
+                <select type="text" class="input input-gradient form-control" name="genre" id="genre_fitler">
                     <option selected>Rechercher par genre</option>
                     <option value="1">femelle</option>
                     <option value="2">mâle</option>
@@ -112,9 +112,6 @@ $lstAnimal = $a->selectAll($premier, $parPage);
             <div class="col" id="validationFilterForm">
                 <button type="button" onclick="return validateForm()" class="btn-filter btn-gradient form-control">Rechercher</button>
             </div>
-<!--            <div class="col-2" id="resetFilterForm">-->
-<!--                <button type="button" onclick="return validateForm()" class="btn-filter btn-gradient form-control">Reset recherche</button>-->
-<!--            </div>-->
             <div class="col inputFilterFormEmpty"></div>
         </div>
     </form>

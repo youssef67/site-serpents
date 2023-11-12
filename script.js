@@ -38,7 +38,8 @@ function ajaxListSnake(field = "", extra= "") {
     }
     else if (field === "resetFormFilter") {
         editClassAndIdFormFilter(true)
-        ajaxListSnake("no_field")
+        xmlhttp.open("GET", "pages/ajaxListSnake.php?field=no_field", true)
+        // ajaxListSnake("no_field")
     } else if (field === "pagination") {
         var dataPagination = {
             nextPage: extra
@@ -50,7 +51,6 @@ function ajaxListSnake(field = "", extra= "") {
     }
     else {
     //Instanciation l'objet REQUEST GET pour le sorting
-
         if (field != "no_field") {
             var sorting = true;
             var dataSorting = {
@@ -61,8 +61,6 @@ function ajaxListSnake(field = "", extra= "") {
             var queryString = Object.keys(dataSorting).map(key => key + '=' + encodeURIComponent(dataSorting[key])).join('&');
 
             xmlhttp.open("GET", "pages/ajaxListSnake.php?" + queryString, true)
-        } else {
-            xmlhttp.open("GET", "pages/ajaxListSnake.php?field=no_field", true)
         }
     }
 
@@ -90,7 +88,6 @@ function ajaxListSnake(field = "", extra= "") {
     if (field === "filterForm") {
         var myForm = document.getElementById("formFilters");
         var data = new FormData(myForm);
-
         // Envoi de la requete au serveur
         xmlhttp.send(data);
     } else {
@@ -134,9 +131,18 @@ function editClassAndIdFormFilter(btnResetExist) {
     if (btnResetExist) {
         validationFormFilter.className = "col validationFilterForm";
 
-        //Suppression du button reset
         var btnResetValidation = document.getElementById("resetFilterForm")
+        var nomFilter = document.getElementById("nom_filter")
+        var raceFilter = document.getElementById("race_filter")
+        var genreFilter = document.getElementById("genre_fitler")
+
+        //Suppression du button reset
         btnResetValidation.remove()
+
+        //Reset des champs du formulaire
+        nomFilter.value = "";
+        raceFilter.value = "Rechercher par race";
+        genreFilter.value = "Rechercher par genre";
     } else {
         validationFormFilter.className = "col-2 validationFilterForm";
 
@@ -149,7 +155,7 @@ function editClassAndIdFormFilter(btnResetExist) {
         // 2 - création du button
         const btnReset = document.createElement("button")
         btnReset.textContent = "Reset"
-        btnReset.type = "button"
+        btnReset.type = "reset"
         btnReset.className = "btn-filter btn-gradient form-control"
         btnReset.onclick = function resetFormFilter() {
             ajaxListSnake("resetFormFilter");
@@ -157,6 +163,7 @@ function editClassAndIdFormFilter(btnResetExist) {
          divReset.appendChild(btnReset);
 
         validationFormFilter.insertAdjacentElement('afterend', divReset);
+
     }
 }
 
