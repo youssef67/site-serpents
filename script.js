@@ -18,6 +18,48 @@ function validateForm() {
     }
 }
 
+// Fonction quoi doit permmettre de peupler la BDD de serpents selons 3 critères
+// Nombre
+// Race
+// Genre
+function ajaxAjoutSerpents() {
+
+    //Controle des valeurs passées dans le formulaire
+    var nb = document.forms["formAddSnakes"]["formAddSnakes_nbSerpents"].value;
+    var race = document.forms["formAddSnakes"]["formAddSnakes_race"].value;
+    var gender = document.forms["formAddSnakes"]["formAddSnakes_genre"].value;
+
+    // Si un des champs est vide, on retourne une erreur
+    if(nb === "" || race === "" || gender === "") {
+        let error = document.getElementById("error_field_addSnakes");
+        error.style.display = "block";
+
+        setTimeout(function () {
+            error.style.display = "none";
+        }, 3000)
+    // Si les champs sont correctes, exécution de la requête AJAX
+    } else {
+        var xmlhttp = new XMLHttpRequest();;
+
+        xmlhttp.open("POST", "pages/ajaxAjoutSerpents.php", true);
+
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200)
+            {
+                document.getElementById("lstSnakes").innerHTML = this.responseText;
+            }
+        }
+
+        var data = new FormData();
+        data.append("nbSnakes", nb);
+        data.append("races_id", $("#formAddSnakes_race").selectpicker().val());
+        data.append("genders_id", $("#formAddSnakes_genre").selectpicker().val());
+        // Envoi de la requete au serveur
+        xmlhttp.send(data);
+    }
+
+}
+
 //-------------------------------------------------------------------------//
 // Request Ajax
 //-------------------------------------------------------------------------//
@@ -163,7 +205,8 @@ function editClassAndIdFormFilter(btnResetExist) {
          divReset.appendChild(btnReset);
 
         validationFormFilter.insertAdjacentElement('afterend', divReset);
-
     }
 }
+
+
 
