@@ -80,7 +80,7 @@
                     </div>
                     <div class="mb-4">
                         <label for="add-genderSerpent" class="col-form-label">Genres :</label>
-                        <select class="selectpicker" multiple title="Selection du sexe" data-width="70%" id="formAddSnakes_genre" name="formAddSnakes_genre">
+                        <select class="selectpicker" multiple title="Selection du genre" data-width="70%" id="formAddSnakes_genre" name="formAddSnakes_genre">
                             <option value="1">Femelle</option>
                             <option value="2">Mâle</option>
                         </select>
@@ -89,7 +89,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button type="button" onclick="return ajaxAjoutSerpents()" class="btn btn-primary">Enregistrer</button>
+                <button type="button" onclick="return ajaxAjoutSerpents()" data-bs-dismiss="modal" class="btn btn-primary">Enregistrer</button>
             </div>
         </div>
     </div>

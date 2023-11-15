@@ -4,6 +4,7 @@ setTimeout(function () {
     validationModification.style.display = "none";
 }, 3000)
 
+
 //Validation form
 function validateForm() {
     var nom = document.forms["formFilter"]["nom"].value;
@@ -46,6 +47,15 @@ function ajaxAjoutSerpents() {
         xmlhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200)
             {
+                setTimeout(function () {
+                    document.querySelector(".updateAddSnakes").style.display = "none";
+                }, 3000)
+
+                //Reset des champs du formulaire
+                $('#formAddSnakes_race').selectpicker('deselectAll');
+                $('#formAddSnakes_genre').selectpicker('deselectAll');
+                document.getElementById("add-nbSerpents").value = "";
+
                 document.getElementById("lstSnakes").innerHTML = this.responseText;
             }
         }

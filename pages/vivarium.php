@@ -118,6 +118,7 @@ $lstAnimal = $a->selectAll($premier, $parPage);
 
 <!-- Début de la liste des serpents-->
 <div id="lstSnakes">
+<?php if (count($lstAnimal) > 0) { ?>
     <table class="table align-middle mb-0 bg-white card-body p-5 text-center">
         <thead class="bg-light">
         <tr>
@@ -131,10 +132,7 @@ $lstAnimal = $a->selectAll($premier, $parPage);
         </tr>
         </thead>
         <tbody>
-
-    <?php
-    foreach ($lstAnimal as $animal) {
-        ?>
+    <?php foreach ($lstAnimal as $animal) { ?>
         <tr>
             <td>
                 <div class="d-flex align-items-center">
@@ -168,32 +166,40 @@ $lstAnimal = $a->selectAll($premier, $parPage);
                 <a type="button" class="btn btn-danger" href="../index.php?page=deleteSnake&id=<?= $animal["id_animal"] ?>">Supprimer</a>
             </td>
         </tr>
-    <?php } ?>
-    </tbody>
+        <?php } ?>
+        </tbody>
     </table>
-    <div class="row justify-content-md-center mt-3">
-        <div class="col col-lg-2">
+            <div class="row justify-content-md-center mt-3">
+                <div class="col col-lg-2">
+                </div>
+                <nav class="col-md-auto">
+                    <ul class="pagination">
+                        <!-- Lien vers la page précédente (désactivé si on se trouve sur la 1ère page) -->
+                        <li class="page-item <?= ($_SESSION["currentPage"] == 1) ? "disabled" : "" ?>">
+                            <a onclick="ajaxListSnake('pagination', <?=$_SESSION["currentPage"] - 1?>)" class="page-link">Précédente</a>
+                        </li>
+                        <?php for($page = 1; $page <= $pages; $page++): ?>
+                            <!-- Lien vers chacune des pages (activé si on se trouve sur la page correspondante) -->
+                            <li class="page-item <?= ($_SESSION["currentPage"] == $page) ? "active" : "";    ?>">
+            <!--                    <a href="../index.php?page=vivarium&nbPage=--><?php //= $page ?><!--" class="page-link">--><?php //= $page ?><!--</a>-->
+                                <a onclick="ajaxListSnake('pagination', <?=$page?>)" class="page-link"><?= $page ?></a>
+                            </li>
+                        <?php endfor ?>
+                        <!-- Lien vers la page suivante (désactivé si on se trouve sur la dernière page) -->
+                        <li class="page-item <?= ($_SESSION["currentPage"] == $pages) ? "disabled" : "" ?>">
+                            <a onclick="ajaxListSnake('pagination', <?=$_SESSION["currentPage"] + 1?>)" class="page-link">Suivante</a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="col col-lg-2">
+            </div>
         </div>
-        <nav class="col-md-auto">
-            <ul class="pagination">
-                <!-- Lien vers la page précédente (désactivé si on se trouve sur la 1ère page) -->
-                <li class="page-item <?= ($_SESSION["currentPage"] == 1) ? "disabled" : "" ?>">
-                    <a onclick="ajaxListSnake('pagination', <?=$_SESSION["currentPage"] - 1?>)" class="page-link">Précédente</a>
-                </li>
-                <?php for($page = 1; $page <= $pages; $page++): ?>
-                    <!-- Lien vers chacune des pages (activé si on se trouve sur la page correspondante) -->
-                    <li class="page-item <?= ($_SESSION["currentPage"] == $page) ? "active" : "";    ?>">
-    <!--                    <a href="../index.php?page=vivarium&nbPage=--><?php //= $page ?><!--" class="page-link">--><?php //= $page ?><!--</a>-->
-                        <a onclick="ajaxListSnake('pagination', <?=$page?>)" class="page-link"><?= $page ?></a>
-                    </li>
-                <?php endfor ?>
-                <!-- Lien vers la page suivante (désactivé si on se trouve sur la dernière page) -->
-                <li class="page-item <?= ($_SESSION["currentPage"] == $pages) ? "disabled" : "" ?>">
-                    <a onclick="ajaxListSnake('pagination', <?=$_SESSION["currentPage"] + 1?>)" class="page-link">Suivante</a>
-                </li>
-            </ul>
-        </nav>
-        <div class="col col-lg-2">
-        </div>
-    </div>
 </div>
+<?php
+} else { ?>
+        <div class="row p-5 text-center" >
+            <div class="alert alert-success col-md-6 offset-md-3 justify-content-center" role="alert">
+                    Pas de serpents enregistrés
+            </div>
+        </div>
+<?php } ?>
