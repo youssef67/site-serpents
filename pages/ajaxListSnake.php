@@ -104,12 +104,6 @@ if (isset($_GET["field"])) {
 $animals = $connAjax->execRequest($request);
 
 if (count($animals) > 0) {
-    echo '<div class="row p-5 text-center update" >
-                <div class="alert alert-success col-md-6 offset-md-3 justify-content-center" role="alert">
-                    Ajout effectué
-                </div>
-           </div>';
-
     require "../components/tableSnakeHead.php";
 
     foreach ($animals as $animal) {

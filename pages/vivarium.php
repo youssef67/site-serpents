@@ -162,6 +162,7 @@ $lstAnimal = $a->selectAll($premier, $parPage);
                 <?= $a->convertDateNaissanceToDateTime($animal["date_naissance"]); ?>
             </td>
             <td>
+                <a type="button" class="btn btn-success" onclick="ajaxSendLoveRoom(<?=$animal["genre"]?>, <?=$animal["id_animal"]?>)">Sélectionner</a>
                 <a type="button" class="btn btn-warning" href="../index.php?page=updtSnake&id=<?= $animal["id_animal"] ?>">Modifier</a>
                 <a type="button" class="btn btn-danger" href="../index.php?page=deleteSnake&id=<?= $animal["id_animal"] ?>">Supprimer</a>
             </td>

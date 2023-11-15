@@ -1,7 +1,7 @@
-<div class="row mt-5">
-    <div class="col-12 text-center">
-        <h1>Bienvenue dans la ferme à serpent</h1>
-    </div>
+<div class="row mt-5 text-center">
+    <h3 class="col-3 fancy">
+        Bienvenue dans la ferme à serpent
+    </h3>
 </div>
 <div class="row mt-5 mb-5 content-home">
     <div class="col-3"></div>

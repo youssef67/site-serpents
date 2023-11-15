@@ -82,7 +82,11 @@ thead img {
     cursor: pointer;
 }
 
+/* Arrow naviagtion image serpents love room */
 
+.arrow-navigation-love:hover {
+    cursor: pointer;
+}
 
 
 

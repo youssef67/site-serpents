@@ -19,6 +19,22 @@ function validateForm() {
     }
 }
 
+function ajaxSendLoveRoom(gender, id) {
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.open("GET", "pages/ajaxSendLoveRoom.php?gender=" + gender + "&id=" + id, true);
+
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200)
+        {
+            document.getElementById("lstSnakes").innerHTML = this.responseText;
+        }
+    }
+
+    xmlhttp.send();
+}
+
+
 // Fonction quoi doit permmettre de peupler la BDD de serpents selons 3 critères
 // Nombre
 // Race
@@ -40,7 +56,7 @@ function ajaxAjoutSerpents() {
         }, 3000)
     // Si les champs sont correctes, exécution de la requête AJAX
     } else {
-        var xmlhttp = new XMLHttpRequest();;
+        var xmlhttp = new XMLHttpRequest();
 
         xmlhttp.open("POST", "pages/ajaxAjoutSerpents.php", true);
 
@@ -217,6 +233,3 @@ function editClassAndIdFormFilter(btnResetExist) {
         validationFormFilter.insertAdjacentElement('afterend', divReset);
     }
 }
-
-
-

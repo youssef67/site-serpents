@@ -96,9 +96,6 @@ $animals = $a->selectAll(0, $parPage);
 
 $pages =  ceil($a->selectCountAll() / $parPage);
 
-var_dump(count($animals));
-var_dump($pages);
-
 if (count($animals) > 0) {
     echo '<div class="row p-5 text-center updateAddSnakes" >
                 <div class="alert alert-success col-md-6 offset-md-3 justify-content-center" role="alert">
