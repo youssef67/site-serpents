@@ -43,6 +43,12 @@
                             <a class="nav-link"  href="index.php?page=addSnakes" data-bs-toggle="modal" data-bs-target="#addSnakes">Ajouter plusieurs serpents</a>
                         </li>
                     </ul>
+                    <ul class="navbar-nav mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <!-- Button trigger modal -->
+                            <a class="nav-link"  data-bs-toggle="modal" data-bs-target="#editSelectSnake" id="button_editSelectSnake">Test</a>
+                        </li>
+                    </ul>
                 <?php } ?>
             </div>
         </div>
@@ -90,6 +96,33 @@
             <div class="modal-footer">
                 <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                 <button type="button" onclick="return ajaxAjoutSerpents()" data-bs-dismiss="modal" class="btn btn-primary">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal pour la confirmation de changement de partenaire -->
+<!-- Modal -->
+<div class="modal fade" id="editSelectSnake" tabindex="-1" aria-labelledby="editSelectSnake" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="title_editSelectSnake"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-4">
+                    <p>Actuellement en sélection : </p>
+                    <p>Nom : <span id="alreadySelected_name"></span></p>
+                    <p>Race : <span id="alreadySelected_race"></span></p>
+                    <p class="mt-2">Remplace par : </p>
+                    <p>Nom : <span id="newSelected_name"></span> </p>
+                    <p>Race : <span id="newSelected_race"></span></p>
+                    <p id="id_serpent_select" style="opacity: 0"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" id="button_changeSelect" onclick="return ajaxConfirmeChangeSelect()" data-bs-dismiss="modal" class="btn btn-primary">Valider</button>
             </div>
         </div>
     </div>

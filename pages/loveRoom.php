@@ -32,7 +32,6 @@
         </div>
     </div>
     <div class="col-2"></div>
-
 </div>
 <div class="row mt-1">
     <div class="col-2"></div>

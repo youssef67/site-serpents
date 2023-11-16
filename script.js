@@ -19,7 +19,7 @@ function validateForm() {
     }
 }
 
-function ajaxSendLoveRoom(gender, id) {
+function ajaxSendLoveRoom(gender, id, change = "false") {
     var xmlhttp = new XMLHttpRequest();
 
     xmlhttp.open("GET", "pages/ajaxSendLoveRoom.php?gender=" + gender + "&id=" + id, true);
@@ -27,7 +27,42 @@ function ajaxSendLoveRoom(gender, id) {
     xmlhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200)
         {
-            document.getElementById("lstSnakes").innerHTML = this.responseText;
+            var data = JSON.parse(this.responseText);
+
+
+            // Si pas undefined /
+            //Cela veut dire qu'on a cliqué sur un serpent qui n'est pas l'id du serpent en session
+            //Dans ce cas on ouvre la modal pour confirmation
+            if (data.id !== undefined) {
+                //Modification des données de la modal
+                document.getElementById("title_editSelectSnake").innerText = data.title_editSelectSnake;
+                document.getElementById("alreadySelected_name").innerText = data.alreadySelected_name;
+                document.getElementById("alreadySelected_race").innerText = data.alreadtySelected_race;
+                document.getElementById("newSelected_name").innerText = data.newSelected_name;
+                document.getElementById("newSelected_race").innerText = data.newSelected_race;
+                document.getElementById("id_serpent_select").innerText = data.id;
+
+                //console.log(this.responseText)
+
+                document.getElementById("button_editSelectSnake").click();
+            }
+        }
+    }
+
+    xmlhttp.send();
+}
+
+function ajaxConfirmeChangeSelect() {
+    var xmlhttp = new XMLHttpRequest();
+
+    let confirmId = document.getElementById("id_serpent_select")
+
+    xmlhttp.open("GET", "pages/ajaxSendLoveRoom.php?confirmId=" + confirmId, true);
+
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200)
+        {
+
         }
     }
 
