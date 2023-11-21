@@ -10,8 +10,7 @@ $conn = new \classes\Bdd();
 //Nombre de serpents par page
 $parPage = 5;
 
-// Calcul du nombre de pages nécessaires pour la pagination
-if (isset($_SESSION["currently_searching"]) && $_SESSION["currently_searching"])
+if (isset($_SESSION["nb_resultat_filtre"]))
     $pages = ceil($_SESSION["nb_resultat_filtre"] / $parPage);
 else
     $pages = ceil($a->selectCountAll() / $parPage);
@@ -20,12 +19,23 @@ else
 $premier = ($_GET["nextPage"] * $parPage) - $parPage;
 
 //Affichage des serpents valides et présent en BDD
-if (isset($_SESSION["currently_searching"]) && $_SESSION["currently_searching"]) {
+if (isset($_SESSION["nb_resultat_filtre"])) {
     $request = $_SESSION["save_request"] . ' AND delete_at IS NULL LIMIT ' . $premier . ', ' . $parPage;
+
+    $animalsId = $conn->execRequest("SELECT id_animal FROM Animal WHERE `id_race` = 1 AND delete_at IS NULL LIMIT 5, 5");
+
+    $lstAnimalId = [];
+
+    foreach ($animalsId as $animal) {
+        array_push($lstAnimalId, $animal["id_animal"]);
+    }
+
     $lstAnimal = $conn->execRequest($request);
 }
-else
+else {
     $lstAnimal = $a->selectAll($premier, $parPage);
+    $lstAnimalId = $a->selectOnlyIdAll($premier, $parPage);
+}
 
 $_SESSION["currentPage"] = $_GET["nextPage"];
 

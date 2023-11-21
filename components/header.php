@@ -117,12 +117,14 @@
                     <p class="mt-2">Remplace par : </p>
                     <p>Nom : <span id="newSelected_name"></span> </p>
                     <p>Race : <span id="newSelected_race"></span></p>
+                    <!-- On affiche dans le DOM l'id du serpent qui va peut etre envoyer en loveroom-->
                     <p id="id_serpent_select" style="opacity: 0"></p>
+                    <p id="genre_serpent_select" style="opacity: 0"></p>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button type="button" id="button_changeSelect" onclick="return ajaxConfirmeChangeSelect()" data-bs-dismiss="modal" class="btn btn-primary">Valider</button>
+                <button type="button" id="button_changeSelect" onclick="enregistrementSerpentSession('', '', true)" data-bs-dismiss="modal" class="btn btn-primary">Valider</button>
             </div>
         </div>
     </div>

@@ -23,7 +23,22 @@ class Animal
         return $this->conn->execRequest("SELECT * FROM 
              `" . $this->table . "` 
              WHERE delete_at IS NULL 
-             ORDER BY `nom` DESC LIMIT " . $premier . ", " . $parPage);
+             ORDER BY `nom` ASC LIMIT " . $premier . ", " . $parPage);
+    }
+
+    public function selectOnlyIdAll($premier, $parPage) {
+        $res =  $this->conn->execRequest("SELECT id_animal FROM 
+             `" . $this->table . "` 
+             WHERE delete_at IS NULL 
+             ORDER BY `nom` ASC LIMIT " . $premier . ", " . $parPage);
+
+        $arrId = [];
+
+        foreach ($res as $animal) {
+            array_push($arrId, $animal["id_animal"]);
+        }
+
+        return $arrId;
     }
 
     public function get($col) {

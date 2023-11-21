@@ -88,5 +88,21 @@ thead img {
     cursor: pointer;
 }
 
+#lstSnakes {
+    margin-left: 5%;
+    margin-right: 5%;
+  /*border: 5px solid black;*/
+    margin-bottom: 5%;
+    margin-top: 2%;
+}
+
+.btn-list {
+    color: white;
+}
+
+.btn-list:hover {
+    color: white;
+}
+
 
 

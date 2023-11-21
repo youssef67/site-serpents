@@ -3,6 +3,10 @@ require_once("classes/Bdd.php");
 require_once("classes/Race.php");
 require_once("classes/Animal.php");
 
+unset($_SESSION["nb_resultat_filtre"]);
+unset($_SESSION["pages"]);
+unset($_SESSION["save_request"]);
+
 $a = new \classes\Animal();
 $conn = new \classes\Bdd();
 
@@ -26,7 +30,7 @@ $premier = ($_SESSION["currentPage"] * $parPage) - $parPage;
 
 //Affichage des serpents valides et présent en BDD
 $lstAnimal = $a->selectAll($premier, $parPage);
-
+$lstAnimalId = $a->selectOnlyIdAll($premier, $parPage);
 ?>
 <!-- Mise en place de la bannière afin de confirmer la modification/suppression -->
 <?php if (isset($_GET["done"])) { ?>
@@ -110,24 +114,29 @@ $lstAnimal = $a->selectAll($premier, $parPage);
                 </select>
             </div>
             <div class="col" id="validationFilterForm">
-                <button type="button" onclick="return validateForm()" class="btn-filter btn-gradient form-control">Rechercher</button>
+                <button type="button" onclick="validateForm()" class="btn-filter btn-gradient form-control" style="font-weight: bold">Rechercher</button>
             </div>
             <div class="col inputFilterFormEmpty"></div>
         </div>
     </form>
 
+
+<div class="row p-5 text-center confirmSelectedSnake" style="display: none">
+    <div class="alert alert-success col-md-6 offset-md-3 justify-content-center content-confirmSelectedSnake" role="alert">
+    </div>
+</div>
 <!-- Début de la liste des serpents-->
 <div id="lstSnakes">
 <?php if (count($lstAnimal) > 0) { ?>
     <table class="table align-middle mb-0 bg-white card-body p-5 text-center">
         <thead class="bg-light">
         <tr>
-            <th>Nom <img onclick="triColonne(type = 'nom', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triNom"/></th>
-            <th>Race <img onclick="triColonne(type = 'id_race', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triRace"></th>
-            <th>Genre <img onclick="triColonne(type = 'genre', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triGenre"></th>
-            <th>Poids <img onclick="triColonne(type = 'poids', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triPoids"></th>
-            <th>Durée de vie <img onclick="triColonne(type = 'duree_vie', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triVie"></th>
-            <th>Date de naissance <img onclick="triColonne(type = 'date_naissance', this.id)" class="arrow-tri" src="../img/others/tri-desc.png" id="triNaissance"></th>
+            <th>Nom <img onclick="triColonne(type = 'nom', this.id, <?=json_encode($lstAnimalId, true);?>)" class="arrow-tri" src="../img/others/tri-asc.png" id="triNom"/></th>
+            <th>Race <img onclick="triColonne(type = 'id_race', this.id, <?=json_encode($lstAnimalId, true);?>)" class="arrow-tri" src="../img/others/tri-asc.png" id="triRace"></th>
+            <th>Genre <img onclick="triColonne(type = 'genre', this.id, <?=json_encode($lstAnimalId, true);?>)" class="arrow-tri" src="../img/others/tri-asc.png" id="triGenre"></th>
+            <th>Poids <img onclick="triColonne(type = 'poids', this.id, <?=json_encode($lstAnimalId, true);?>)" class="arrow-tri" src="../img/others/tri-asc.png" id="triPoids"></th>
+            <th>Durée de vie <img onclick="triColonne(type = 'duree_vie', <?=json_encode($lstAnimalId, true);?>)" class="arrow-tri" src="../img/others/tri-asc.png" id="triVie"></th>
+            <th>Date de naissance <img onclick="triColonne(type = 'date_naissance', this.id, <?=json_encode($lstAnimalId, true);?>)" class="arrow-tri" src="../img/others/tri-asc.png" id="triNaissance"></th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -162,7 +171,17 @@ $lstAnimal = $a->selectAll($premier, $parPage);
                 <?= $a->convertDateNaissanceToDateTime($animal["date_naissance"]); ?>
             </td>
             <td>
-                <a type="button" class="btn btn-success" onclick="ajaxSendLoveRoom(<?=$animal["genre"]?>, <?=$animal["id_animal"]?>)">Sélectionner</a>
+                <?php
+                    $dataToCheck = [
+                            'sessionSnakeFemelle' => isset($_SESSION['femelle_selected']) ? $_SESSION['femelle_selected'] : 'null',
+                            'sessionSnakeMale' => isset($_SESSION['male_selected']) ? $_SESSION['male_selected'] : 'null',
+                            "idSnakeSelected" => $animal["id_animal"],
+                            "genreSnakeSelected" => $animal["genre"]
+                    ];
+
+//                    var_dump($dataToCheck);
+                ?>
+                <a  type="button" class="btn btn-list" style="background-color: #0B486B" onclick=checkSnakeSelected(<?php echo json_encode($dataToCheck) ?>)>Sélectionner</a>
                 <a type="button" class="btn btn-warning" href="../index.php?page=updtSnake&id=<?= $animal["id_animal"] ?>">Modifier</a>
                 <a type="button" class="btn btn-danger" href="../index.php?page=deleteSnake&id=<?= $animal["id_animal"] ?>">Supprimer</a>
             </td>
@@ -177,18 +196,18 @@ $lstAnimal = $a->selectAll($premier, $parPage);
                     <ul class="pagination">
                         <!-- Lien vers la page précédente (désactivé si on se trouve sur la 1ère page) -->
                         <li class="page-item <?= ($_SESSION["currentPage"] == 1) ? "disabled" : "" ?>">
-                            <a onclick="ajaxListSnake('pagination', <?=$_SESSION["currentPage"] - 1?>)" class="page-link">Précédente</a>
+                            <a onclick="ajaxPagination(<?=$_SESSION["currentPage"] - 1?>)" class="page-link">Précédente</a>
                         </li>
                         <?php for($page = 1; $page <= $pages; $page++): ?>
                             <!-- Lien vers chacune des pages (activé si on se trouve sur la page correspondante) -->
                             <li class="page-item <?= ($_SESSION["currentPage"] == $page) ? "active" : "";    ?>">
             <!--                    <a href="../index.php?page=vivarium&nbPage=--><?php //= $page ?><!--" class="page-link">--><?php //= $page ?><!--</a>-->
-                                <a onclick="ajaxListSnake('pagination', <?=$page?>)" class="page-link"><?= $page ?></a>
+                                <a onclick="ajaxPagination(<?=$page?>)" class="page-link"><?= $page ?></a>
                             </li>
                         <?php endfor ?>
                         <!-- Lien vers la page suivante (désactivé si on se trouve sur la dernière page) -->
                         <li class="page-item <?= ($_SESSION["currentPage"] == $pages) ? "disabled" : "" ?>">
-                            <a onclick="ajaxListSnake('pagination', <?=$_SESSION["currentPage"] + 1?>)" class="page-link">Suivante</a>
+                            <a onclick="ajaxPagination(<?=$_SESSION["currentPage"] + 1?>)" class="page-link">Suivante</a>
                         </li>
                     </ul>
                 </nav>
