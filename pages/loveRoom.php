@@ -1,6 +1,11 @@
 <?php
 
 ?>
+<script>
+    window.onload = function() {
+        test();
+    }
+</script>
 <div class="row mt-5 text-center">
     <h3 class="col-3 fancy">
         La chambre nuptiale

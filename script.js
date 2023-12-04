@@ -6,6 +6,10 @@ if (validationModification != null) {
     }, 3000)
 }
 
+function test() {
+    
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //Function permettant de valider les entrées du formulaire de recherche avant envoi au script PHP
 function validateForm() {
@@ -34,83 +38,115 @@ function validateForm() {
 //      1 - l'id de session est null ---> enregristrement en variable de session
 //      2 - li de session est égal à l'id selectionné ----> on précise à l'utilisateur que ce dernier est déjà en selection
 //      3 - l'id de session est différent de l'id selectionné ----> on confirme le changement
-function checkSnakeSelected(data) {
+function checkSnakeSelected(id, genre) {
+    //Récupération de la div qui gère les messages
+    let validationModification = document.querySelector(".confirmSelectedSnake");
+    let content = document.querySelector(".content-confirmSelectedSnake");
 
     // Traitement dans le cas si c'est une femelle
-    if(data.genreSnakeSelected === 1) {
-        //Si la variable serpent femelle de session est null, cela veut dire que aucun serpent n'est actuellement en selection
-        if(data.sessionSnakeFemelle === 'null') {
+        if(parseInt(genre) === 1) {
+            var femelleIdSelectionne = localStorage.getItem("femelleIdSelectionne")
+            //Si la variable serpent femelle de session est null, cela veut dire que aucun serpent n'est actuellement en selection
+            if(femelleIdSelectionne === null) {
             //on va envoyer l'id pour qu'un script PHP fasse l'enregistrement en session
-            enregistrementSerpentSession(data.idSnakeSelected, data.genreSnakeSelected)
-        }
-        //Si l'id de session est égal à l'id selectionné / On précise à l'utilisateur que le serpent est déjà en selection
-        else if(parseInt(data.sessionSnakeFemelle) === data.idSnakeSelected) {
-            let validationModification = document.querySelector(".confirmSelectedSnake");
-            let content = document.querySelector(".content-confirmSelectedSnake");
-            content.innerHTML = "Ce serpent est déjà selectionné";
+                localStorage.setItem("femelleIdSelectionne", id)
 
-            validationModification.style.display = "block";
+                content.innerHTML = "Femelle sélectionné pour la love room";
 
-            setTimeout(function () {
-                validationModification.style.display = "none";
-            }, 3000)
+                validationModification.style.display = "block";
+
+                setTimeout(function () {
+                    validationModification.style.display = "none";
+                }, 3000)
+            }
+            //Si l'id de session est égal à l'id selectionné / On précise à l'utilisateur que le serpent est déjà en selection
+            else if(parseInt(femelleIdSelectionne) === id) {
+
+                content.innerHTML = "Cette femelle est déjà sélectionné";
+
+                validationModification.style.display = "block";
+
+                setTimeout(function () {
+                    validationModification.style.display = "none";
+                }, 3000)
+            }
+            // Si l'id session est différent de l'id selectionné / on confirme le changement d'id
+            else {
+                confirmChangeSelection(id, genre, femelleIdSelectionne)
+            }
+        } else {
+            var maleIdSelectionne = localStorage.getItem("maleIdSelectionne")
+            console.log(maleIdSelectionne)
+            console.log(id)
+
+            if(maleIdSelectionne === null) {
+                //on va envoyer l'id pour qu'un script PHP fasse l'enregistrement en session
+                localStorage.setItem("maleIdSelectionne", id)
+
+                content.innerHTML = "Mâle sélectionné pour la love room";
+
+                validationModification.style.display = "block";
+
+                setTimeout(function () {
+                    validationModification.style.display = "none";
+                }, 3000)
+            }
+            //Si l'id de session est égal à l'id selectionné / On précise à l'utilisateur que le serpent est déjà en selection
+            else if(parseInt(maleIdSelectionne) === id) {
+
+                content.innerHTML = "Ce mâle est déjà sélectionné";
+
+                validationModification.style.display = "block";
+
+                setTimeout(function () {
+                    validationModification.style.display = "none";
+                }, 3000)
+            }
+            // Si l'id session est différent de l'id selectionné / on confirme le changement d'id
+            else {
+                confirmChangeSelection(id, genre, maleIdSelectionne)
+            }
         }
-        // Si l'id session est différent de l'id selectionné / on confirme le changement d'id
-        else {
-            confirmChangeSelection(data.idSnakeSelected, data.genreSnakeSelected, data.sessionSnakeFemelle)
-        }
-    }
 }
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //Function permettant l'enregistrement du serpent dans la variable de session
-function enregistrementSerpentSession(snakeSelected, genreSelected, edit = false) {
-    var xmlhttp = new XMLHttpRequest();
+function enregistrementSerpentSession(snakeSelected, genreSelected) {
+    //Récupération de la div qui gère les messages
+    let validationModification = document.querySelector(".confirmSelectedSnake");
+    let content = document.querySelector(".content-confirmSelectedSnake");
 
     //Si edit est true // l'utilisateur a confirmé le changement d'id
-    if (edit === true) {
-        snakeSelected = document.getElementById("id_serpent_select").textContent
-        genreSelected = document.getElementById("genre_serpent_select").textContent
+    snakeSelected = document.getElementById("id_serpent_select").textContent
+    genreSelected = document.getElementById("genre_serpent_select").textContent
+
+    if (parseInt(genreSelected) === 1) {
+        localStorage.setItem("femelleIdSelectionne", snakeSelected)
+        content.textContent = "femelle bien modifié";
+    } else {
+        localStorage.setItem("maleIdSelectionne", snakeSelected)
+        content.textContent = "Mâle bien modifié";
     }
 
-    xmlhttp.open("GET", "ajax/enregistrementSerpentSession.php?id=" + snakeSelected + "&genre=" + genreSelected, true);
+    validationModification.style.display = "block";
 
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200)
-        {
-            let validationModification = document.querySelector(".confirmSelectedSnake");
-            let content = document.querySelector(".content-confirmSelectedSnake");
-
-            if (edit == true)
-                content.textContent = "Serpent bien modifié";
-            else
-                content.textContent = "Serpent bien ajouté";
-
-            validationModification.style.display = "block";
-
-            setTimeout(function () {
-                validationModification.style.display = "none";
-            }, 3000)
-
-        }
-    }
-
-    xmlhttp.send();
+    setTimeout(function () {
+        validationModification.style.display = "none";
+    }, 3000)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //Function permettant de confirmer le changement de la sélection pour la love room
-function confirmChangeSelection(id, gender, idSerpentSession) {
+function confirmChangeSelection(id, gender, idSerpentLocalStorage) {
     var xmlhttp = new XMLHttpRequest();
 
-    xmlhttp.open("GET", "ajax/confirmChangeSelection.php?id=" + id + "&gender=" + gender + "&idSession=" + idSerpentSession, true);
+    xmlhttp.open("GET", "ajax/confirmChangeSelection.php?id=" + id + "&gender=" + gender + "&idSession=" + idSerpentLocalStorage, true);
 
     xmlhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200)
         {
             var data = JSON.parse(this.responseText);
-
             // Si pas undefined /
             //Cela veut dire qu'on a cliqué sur un serpent qui n'est pas l'id du serpent en session
             //Dans ce cas on ouvre la modal pour confirmation
@@ -123,7 +159,7 @@ function confirmChangeSelection(id, gender, idSerpentSession) {
             document.getElementById("id_serpent_select").innerText = data.id;
             document.getElementById("genre_serpent_select").innerText = data.genre;
 
-            document.getElementById("button_editSelectSnake").click();
+            document.getElementById("confirmChangeSnake").click();
         }
     }
 

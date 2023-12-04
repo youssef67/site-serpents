@@ -32,6 +32,12 @@
                     </li>
                 </ul>
                 <?php if(isset($_REQUEST["page"]) && $_REQUEST["page"] == "vivarium") { ?>
+                    <ul class="navbar-nav mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <!-- Button trigger modal -->
+                            <a class="nav-link" id="confirmChangeSnake" data-bs-toggle="modal" data-bs-target="#editSelectSnake" style="display: none">confirmer selection</a>
+                        </li>
+                    </ul>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link"  href="index.php?page=updtSnake&id=new">Créer un nouveau Serpent</a>
@@ -40,7 +46,7 @@
                     <ul class="navbar-nav mb-2 mb-lg-0">
                         <li class="nav-item">
                             <!-- Button trigger modal -->
-                            <a class="nav-link"  href="index.php?page=addSnakes" data-bs-toggle="modal" data-bs-target="#addSnakes">Ajouter plusieurs serpents</a>
+                            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#addSnakes">Ajouter plusieurs serpents</a>
                         </li>
                     </ul>
                 <?php } ?>
@@ -111,7 +117,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button type="button" id="button_changeSelect" onclick="enregistrementSerpentSession('', '', true)" data-bs-dismiss="modal" class="btn btn-primary">Valider</button>
+                <button type="button" id="button_changeSelect" onclick="enregistrementSerpentSession('', '')" data-bs-dismiss="modal" class="btn btn-primary">Valider</button>
             </div>
         </div>
     </div>
