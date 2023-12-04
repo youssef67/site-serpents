@@ -15,9 +15,15 @@ function validateForm() {
     var genre = document.forms["formFilter"]["genre"].value;
 
     if (nom === '' && race === "Rechercher par race" && genre === "Rechercher par genre") {
-        document.getElementById("error-filters").style.display = "block";
+        let info = document.getElementById("info");
+
+        info.style.display = "block";
+        document.getElementById("info-text").innerText = "Veuillez indiquer au moins un critère de recherche";
+
+        setTimeout(function () {
+            info.style.display = "none";
+        }, 3000)
     } else {
-        document.getElementById("error-filters").style.display = "none";
         searchFilterForms();
     }
 }
@@ -136,31 +142,39 @@ function ajaxAjoutSerpents() {
 
     // Si un des champs est vide, on retourne une erreur
     if(nb === "" || race === "" || gender === "") {
-        let error = document.getElementById("error_field_addSnakes");
-        error.style.display = "block";
+        let info = document.getElementById("info");
+
+        info.style.display = "block";
+
+        let phraseErreur = "Merci de préciser : ";
+
+        if (nb === "") phraseErreur += " Un nombre supérieur à 0";
+        if (race === "") phraseErreur += " - Au minimum 1 race";
+        if (gender === "") phraseErreur += " - Au minimum un genre";
+
+        document.getElementById("info-text").innerText = phraseErreur;
 
         setTimeout(function () {
-            error.style.display = "none";
-        }, 3000)
+            info.style.display = "none";
+        }, 5000)
+
     // Si les champs sont correctes, exécution de la requête AJAX
     } else {
         var xmlhttp = new XMLHttpRequest();
 
-        xmlhttp.open("POST", "pages/ajaxAjoutSerpents.php", true);
+        xmlhttp.open("POST", "ajax/ajaxAjoutSerpents.php", true);
 
         xmlhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200)
             {
-                setTimeout(function () {
-                    document.querySelector(".updateAddSnakes").style.display = "none";
-                }, 3000)
-
                 //Reset des champs du formulaire
                 $('#formAddSnakes_race').selectpicker('deselectAll');
                 $('#formAddSnakes_genre').selectpicker('deselectAll');
                 document.getElementById("add-nbSerpents").value = "";
 
                 document.getElementById("lstSnakes").innerHTML = this.responseText;
+
+                modifierEtatFerme();
             }
         }
 
@@ -171,8 +185,34 @@ function ajaxAjoutSerpents() {
         // Envoi de la requete au serveur
         xmlhttp.send(data);
     }
-
 }
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//Function permettant la pagination
+function modifierEtatFerme() {
+    var xmlhttp;
+    if(window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+
+    xmlhttp.open("GET", "ajax/miseAJourInformationsFerme.php", true)
+
+    // Déclaration de l'event listener pour l'event readyStateChange event
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200)
+        {
+            let data = JSON.parse(this.responseText);
+
+            document.getElementById("nbTotal").innerText = data.totalSerpents;
+            document.getElementById("nbFemelles").innerText = data.nbFemelles;
+            document.getElementById("nbMales").innerText = data.nbMales;
+        }
+    }
+
+    xmlhttp.send();
+}
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //Function permettant la pagination
@@ -199,8 +239,9 @@ function ajaxPagination(nextPage= "") {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //Function permettant de récupérer la colonne concerné par le sorting
-function triColonne(field, id, arrId) {
+function triColonne(field, id) {
 
+     console.log(id)
     // ON récupère le type de sort actuellement en place
      let fileSrcImg = document.getElementById(id).src;
 
@@ -218,19 +259,14 @@ function triColonne(field, id, arrId) {
 
     typeSorting = typeSorting === "asc" ? "desc" : "asc";
 
-    console.log(field)
-    console.log(id)
-    console.log(arrId)
-
     if (typeSorting !== "") {
-        console.log(typeSorting)
-        sorting(field, typeSorting.toUpperCase(), arrId)
+        sorting(field, typeSorting.toUpperCase(), id)
     }
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //Sorting de la colonne sélectionnée
-function sorting(field, typeSort, arrId) {
+function sorting(field, typeSort, id) {
     var xmlhttp;
     if(window.XMLHttpRequest) {
         xmlhttp = new XMLHttpRequest();
@@ -239,21 +275,16 @@ function sorting(field, typeSort, arrId) {
     }
 
     xmlhttp.open("GET",
-        "ajax/sortColonne.php?field=" + field + "&typeSort=" + typeSort
-        + "&id=" + arrId,
-        true)
+        "ajax/sortColonne.php?field=" + field + "&typeSort=" + typeSort, true)
 
     xmlhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200)
         {
             document.getElementById("lstSnakes").innerHTML = this.responseText;
 
-            let srcAModifier =  document.getElementById("triNom");
+            let srcAModifier =  document.getElementById(id);
 
-            if (srcAModifier != null) {
-                let oppositeSorting = typeSort === "DESC" ? "asc" : "desc";
-                srcAModifier.src = "./img/others/tri-" + oppositeSorting + ".png"
-            }
+            srcAModifier.src = "./img/others/tri-" + typeSort.toLowerCase() + ".png";
         }
     }
 
@@ -350,12 +381,45 @@ function editClassAndIdFormFilter(btnResetExist) {
 
         // 2 - création du button
         const btnReset = document.createElement("button")
-        btnReset.textContent = "Reset"
+        btnReset.textContent = "Effacer"
         btnReset.type = "reset"
-        btnReset.className = "btn-filter btn-gradient form-control"
+        btnReset.className = "btn-filter input-gradient form-control"
         btnReset.onclick = resetFormFilters;
         divReset.appendChild(btnReset);
 
         validationFormFilter.insertAdjacentElement('afterend', divReset);
     }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//Suppression du serpent
+
+function deleteSerpent(id) {
+    var xmlhttp;
+
+    if(window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+
+    xmlhttp.open("GET",
+        "ajax/deleteSnake.php?idSnake=" + id, true)
+
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            document.getElementById("lstSnakes").innerHTML = this.responseText;
+
+            let info = document.getElementById("info");
+
+            info.style.display = "block";
+            document.getElementById("info-text").innerText = "Serpent bien supprimé";
+
+            setTimeout(function () {
+                info.style.display = "none";
+            }, 3000)
+
+            modifierEtatFerme();
+        }
+    }
+
+    xmlhttp.send();
 }

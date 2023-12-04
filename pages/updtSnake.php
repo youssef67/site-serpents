@@ -47,7 +47,7 @@ if(isset($_POST["sub_snake"])) {
         }
     }
 
-    header('Location: index.php?page=vivarium&done=update');
+    header('Location: index.php?page=vivarium&update=true');
 }
 
 //Si update d'un serpent, on calcul la durée de vie en minutes + secondes

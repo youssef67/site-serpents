@@ -8,13 +8,11 @@ body {
 
 
 /* Input style pour la recherche via les filtre*/
-
 .input {
     height: 35px;
     margin-bottom: 15px;
     padding-left: 15px;
     padding-right: 15px;
-
     border-radius: 4px;
     border: 2px solid #fff;
     background-color: transparent;
@@ -32,7 +30,7 @@ body {
     transition: 0.5s;
     background-size: 200% auto;
     color: white;
-    /* text-shadow: 0px 0px 10px rgba(0,0,0,0.2);*/
+    /*text-shadow: 0px 0px 10px rgba(0,0,0,0.2);*/
     box-shadow: 0 0 20px #eee;
     border-radius: 10px;
 }
@@ -40,6 +38,18 @@ body {
 .btn-filter:hover {
     background-position: right center; /* change the direction of the change here */
 }
+
+#resetFilterForm button {
+    background-color: #dc4c64;
+}
+
+#resetFilterForm {
+    border-radius: 4px;
+    border: 2px solid #fff;
+    background-color: transparent;
+}
+
+
 
 .btn-gradient {
     background-image: linear-gradient(to right, #f6d365 0%, #fda085 51%, #f6d365 100%);
@@ -102,6 +112,14 @@ thead img {
 
 .btn-list:hover {
     color: white;
+}
+
+.page-item:hover {
+    cursor: pointer;
+}
+
+#race_filter:hover, #nom_filter:hover, #genre_fitler:hover {
+    cursor: pointer;
 }
 
 

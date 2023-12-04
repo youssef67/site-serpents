@@ -43,12 +43,6 @@
                             <a class="nav-link"  href="index.php?page=addSnakes" data-bs-toggle="modal" data-bs-target="#addSnakes">Ajouter plusieurs serpents</a>
                         </li>
                     </ul>
-                    <ul class="navbar-nav mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <!-- Button trigger modal -->
-                            <a class="nav-link"  data-bs-toggle="modal" data-bs-target="#editSelectSnake" id="button_editSelectSnake">Test</a>
-                        </li>
-                    </ul>
                 <?php } ?>
             </div>
         </div>
@@ -62,13 +56,6 @@
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="title-addSnakes">Ajouter plusieurs serpents</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="row mt-2" style="display: none" id="error_field_addSnakes">
-                <div class="col-12">
-                    <div class="alert alert-warning mb-4" role="alert">
-                        Veuillez remplir l'ensemble des champs
-                    </div>
-                </div>
             </div>
             <div class="modal-body">
                 <form id="formAddSnakes">

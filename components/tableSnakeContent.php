@@ -27,8 +27,17 @@ echo "<tr>
         <td>" .
             $a->convertDateNaissanceToDateTime($animal["date_naissance"]).
             "</td>
-        <td>
-            <a type='button' class='btn btn-warning' href='../index.php?page=updtSnake&id=" . $animal["id_animal"] . "'>Modifier</a>
-            <a type='button' class='btn btn-danger' href='../index.php?page=deleteSnake&id=" . $animal["id_animal"] . "'>Modifier</a>
+        <td>";
+
+            $dataToCheck = [
+                'sessionSnakeFemelle' => isset($_SESSION['femelle_selected']) ? $_SESSION['femelle_selected'] : 'null',
+                'sessionSnakeMale' => isset($_SESSION['male_selected']) ? $_SESSION['male_selected'] : 'null',
+                "idSnakeSelected" => $animal["id_animal"],
+                "genreSnakeSelected" => $animal["genre"]
+            ];
+
+        echo "<a type='button' class='btn btn-list' style='background-color: #0B486B' onclick='checkSnakeSelected(" . json_encode($dataToCheck) . ")'><i class='bi bi-arrow-through-heart-fill'></i></a>
+              <a type='button' class='btn btn-warning' href='../index.php?page=updtSnake&id=" . $animal["id_animal"] . "'><i class='bi bi-pencil'></i></a>
+              <a type='button' class='btn btn-danger' onclick='deleteSerpent(". $animal["id_animal"] .")'  ><i class='bi bi-trash'></i></a>
         </td>
     </tr>";

@@ -12,12 +12,12 @@ $races = $connAjax->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
 
 //Nombre de serpents par page
 $parPage = 5;
+// Lors de l'appel du script PHP, a chague recherche, on initialise la page 1 pour la pagination
+$_SESSION["currentPage"] = 1;
+
 // Calul de la première occurence à prendre
 $premier = ($_SESSION["currentPage"] * $parPage) - $parPage;
 
-
-// Lors de l'appel du script PHP, a chague recherche, on initialise la page 1 pour la pagination
-    $_SESSION["currentPage"] = 1;
 // Création d'un tableau des valeurs passées dans le filtre
     $arr = [];
 
@@ -43,6 +43,8 @@ if (!empty($name) || !empty($race) || !empty($genre)) {
         if ($i != count($keys) - 1) $conditions[$i] .= " AND ";
     }
 
+    var_dump($conditions);
+
     //Séparation du tableau des conditions en chaine de caractères
     $whereValues = implode(" ", $conditions);
 
@@ -63,15 +65,15 @@ if (!empty($name) || !empty($race) || !empty($genre)) {
     $request = $request . ' AND delete_at IS NULL ORDER BY nom ASC LIMIT ' . $premier . ', ' . $parPage;
 
     //Récupération des ID lors du chargement de la 1er pages
-    $requestId = 'SELECT id_animal FROM Animal WHERE ' . $whereValues . ' AND delete_at IS NULL ORDER BY nom ASC LIMIT 0,' . $parPage;
-
-    $animalsId = $connAjax->execRequest($requestId);
-
-    $lstAnimalId = [];
-
-    foreach ($animalsId as $animal) {
-        array_push($lstAnimalId, $animal["id_animal"]);
-    }
+//    $requestId = 'SELECT id_animal FROM Animal WHERE ' . $whereValues . ' AND delete_at IS NULL ORDER BY nom ASC LIMIT 0,' . $parPage;
+//
+//    $animalsId = $connAjax->execRequest($requestId);
+//
+//    $lstAnimalId = [];
+//
+//    foreach ($animalsId as $animal) {
+//        array_push($lstAnimalId, $animal["id_animal"]);
+//    }
 }
 
 $animals = $connAjax->execRequest($request);

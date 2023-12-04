@@ -90,19 +90,15 @@ for ($i = 0; $i < $nbOfSnakesToCreate; $i++) {
     $s->set("date_naissance", $randomDate);
 }
 
+$_SESSION["currentPage"] = 1;
 $parPage = 5;
 
-$animals = $a->selectAll(0, $parPage);
+//Calcul du 1er serpent de la liste
+$premier = ($_SESSION["currentPage"] * $parPage) - $parPage;
+
+$animals = $a->selectAll($premier, $parPage);
 
 $pages =  ceil($a->selectCountAll() / $parPage);
-
-if (count($animals) > 0) {
-    echo '<div class="row p-5 text-center updateAddSnakes" >
-                <div class="alert alert-success col-md-6 offset-md-3 justify-content-center" role="alert">
-                        Ajout des serpents réussi
-                </div>
-           </div>';
-}
 
 if (count($animals) > 0) {
     require "../components/tableSnakeHead.php";
