@@ -82,19 +82,7 @@ body {
     margin-inline: auto;
 }
 
-/* Fleche de tri */
-
-.arrow-tri {
-    width: 20px;
-    height: 20px;
-}
-thead img {
-    cursor: pointer;
-}
-
-/* Arrow naviagtion image serpents love room */
-
-.arrow-navigation-love:hover {
+.dice:hover {
     cursor: pointer;
 }
 

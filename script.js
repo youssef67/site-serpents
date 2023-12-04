@@ -6,8 +6,71 @@ if (validationModification != null) {
     }, 3000)
 }
 
-function test() {
-    
+function accoupler(idFemelle, idMale) {
+
+
+}
+
+function randomChange(genre) {
+    var xmlhttp = new XMLHttpRequest();
+
+    let id;
+
+    if(genre === 2) {
+        id = document.getElementById("idFemelle").innerText;
+    } else {
+        id = document.getElementById("idMale").innerText;
+    }
+
+    xmlhttp.open("GET", "ajax/changeRandom.php?id=" + id + "&genre=" + genre, true);
+
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200)
+        {
+            var data = JSON.parse(this.responseText);
+
+            if(data.genre === 2) {
+                document.getElementById("nomFemelleLoveRoom").innerHTML = data.serpentNom;
+                document.getElementById("photoFemelle").src = '../img/snake-img/' + data.serpentPhoto;
+                document.getElementById("idFemelle").innerHTML = data.idSerpent;
+            } else {
+                document.getElementById("nomMaleLoveRoom").innerHTML = data.serpentNom;
+                document.getElementById("photoMale").src = '../img/snake-img/' + data.serpentPhoto;
+                document.getElementById("idMale").innerHTML = data.idSerpent;
+            }
+        }
+    }
+
+    xmlhttp.send();
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//Function permettant de remplir les serpents selectionnés pour l'accouplement
+function getLocalStoragetoSession() {
+    var xmlhttp = new XMLHttpRequest();
+
+    let idFemelle = localStorage.getItem("femelleIdSelectionne")
+    let idMale = localStorage.getItem("maleIdSelectionne")
+
+    xmlhttp.open("GET", "ajax/ajaxSessionLoveRoom.php?idFemelle=" + idFemelle + "&idMale=" + idMale, true);
+
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200)
+        {
+            var data = JSON.parse(this.responseText);
+
+            document.getElementById("nomFemelleLoveRoom").innerHTML = data.nomFemelle;
+            document.getElementById("nomMaleLoveRoom").innerHTML = data.nomMale;
+
+            document.getElementById("idFemelle").innerHTML = data.idFemelle;
+            document.getElementById("idMale").innerHTML = data.idMale;
+
+            document.getElementById("photoFemelle").src = '../img/snake-img/' + data.photoFemelle;
+            document.getElementById("photoMale").src = '../img/snake-img/' + data.photoMale;
+        }
+    }
+
+    xmlhttp.send();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

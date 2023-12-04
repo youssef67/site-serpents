@@ -41,6 +41,11 @@ class Animal
         return $arrId;
     }
 
+    public function selectById($id) {
+        $res = $this->conn->execRequest("SELECT * FROM `" . $this->table . "` WHERE id_animal LIKE " . $id);
+        return $res;
+    }
+
     public function get($col) {
         return $this->conn->select($this->table, $this->id, $col);
     }
