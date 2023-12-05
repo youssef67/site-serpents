@@ -102,14 +102,4 @@ class Animal
 
         return $parser->format($date);
     }
-
-
-
-
-
-
-
-
-
-
 }

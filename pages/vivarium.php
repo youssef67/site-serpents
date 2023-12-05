@@ -119,7 +119,6 @@ $lstAnimal = $a->selectAll($premier, $parPage);
 <!-- Début de la liste des serpents-->
 <div class="row text-center" style="display: none" id="info">
     <div class="alert alert-success col-md-6 offset-md-3 justify-content-center" role="alert" id="info-text">
-        texte a modifier
     </div>
 </div>
 <div id="lstSnakes">

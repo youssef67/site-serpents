@@ -12,6 +12,10 @@
     <p class="mt-4" style="font-size: 1.5em">Un lieu de plaisir et de rencontre innattendu</p>
     <p style="font-size: 1.5em">Si pas de papillons dans le ventre, laissez le hasard faire les choses !!!</p>
 </div>
+<div class="row text-center" style="display: none" id="info">
+    <div class="alert alert-success col-md-6 offset-md-3 justify-content-center" role="alert" id="info-text">
+    </div>
+</div>
 <div id="displayResult"></div>
 <div class="mb-5">
     <div class="row mt-5">
@@ -45,7 +49,7 @@
             </div>
         </div>
         <div class="col-2 d-flex align-items-center justify-content-center">
-            <button >accoupler</button>
+            <button onclick="accoupler()">accoupler</button>
         </div>
         <div class="card col-3">
             <img src="/img/snake-img/snake-2.png" class="card-img-top" id="photoFemelle"/>

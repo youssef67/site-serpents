@@ -6,9 +6,31 @@ if (validationModification != null) {
     }, 3000)
 }
 
-function accoupler(idFemelle, idMale) {
+function accoupler() {
+    let idFemelle = document.getElementById("idFemelle").innerText
+    let idMale = document.getElementById("idMale").innerText
 
+    var xmlhttp = new XMLHttpRequest();
 
+    xmlhttp.open("GET", "ajax/ajaxAccouplement.php?idFemelle=" + idFemelle + "&idMale=" + idMale, true);
+
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200)
+        {
+            var data = JSON.parse(this.responseText);
+
+            let info = document.getElementById("info");
+            document.getElementById("info-text").innerText = "Le serpent " + data.nomEnfant + " a vu le jour, longue vie à lui";
+
+            info.style.display = "block";
+
+            setTimeout(function () {
+                info.style.display = "none";
+            }, 6000)
+        }
+    }
+
+    xmlhttp.send();
 }
 
 function randomChange(genre) {
