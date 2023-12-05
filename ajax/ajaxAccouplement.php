@@ -111,7 +111,9 @@ $s->set("nom", $arr_names[$nameRandomIndex]);
 $s->set("id_race", $racesParent[$raceRandomIndex]);
 $s->set("genre", $genderRandom);
 $s->set("poids", rand(0, 20000));
-$s->set("duree_vie", rand(0, 960));
+
+$dureeVie = rand(2, 15);
+$s->set("duree_vie", $dureeVie);
 // Selection d'un nom de fichier dans le tableau + ajout en BDD
 $index = array_rand($fileList, 1);
 $s->set("path_img", $fileList[$index]);
@@ -119,11 +121,15 @@ $s->set("path_img", $fileList[$index]);
 $s->set("id_mere", $_GET["idFemelle"]);
 $s->set("id_pere", $_GET["idMale"]);
 
-//Création d'une date de naissance
 $date = new DateTime("NOW");
-$dateToString = $date->format("Y-m-d");
+//Création d'une date de naissance
+$dateNaissanceToString = $date->format("Y-m-d H:i:s");
+$s->set("date_naissance", $dateNaissanceToString);
+//Création date de mort
+$dateMortDateTime = $date->modify('+' . $dureeVie . ' minutes');
+$dateMortToString = $dateMortDateTime->format('Y-m-d H:i:s');
+$s->set("date_mort", date('Y-m-d H:i:s', strtotime($dateMortToString)));
 
-$s->set("date_naissance", $dateToString);
 
 $data = [
     "nomEnfant" => $arr_names[$nameRandomIndex],

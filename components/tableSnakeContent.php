@@ -22,10 +22,10 @@ echo "<tr>
             $poids .
             "</td>
         <td>" .
-            $a->convertDureeVieEnString($animal["duree_vie"]) .
-            "</td>
+            $animal["duree_vie"] .
+            " minutes</td>
         <td>" .
-            $a->convertDateNaissanceToDateTime($animal["date_naissance"]).
+            date("d-m-Y H:i:s", strtotime($animal["date_naissance"])) .
             "</td>
         <td>";
 

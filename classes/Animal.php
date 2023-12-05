@@ -70,36 +70,36 @@ class Animal
         return $res[0]["nbSnake"];
     }
 
-    public function convertDureeVieEnString ($number) {
-        $secondes = $number;
+//    public function convertDureeVieEnString ($number) {
+//        $secondes = $number;
+//
+//        $minutes = floor($secondes / 60);
+//        $secondes -= $minutes * 60;
+//
+//        $minutesAvecSouSansS = $minutes > 1 ? " minutes " : "minute";
+//
+//        $afficheDureeVie = $minutes . $minutesAvecSouSansS;
+//
+//        if ($secondes > 0) {
+//            $secondesAvecSouSansS = $secondes > 1 ? " secondes" : " seconde";
+//            $afficheDureeVie .= " et " . $secondes . $secondesAvecSouSansS;
+//        }
+//
+//        return $afficheDureeVie;
+//    }
 
-        $minutes = floor($secondes / 60);
-        $secondes -= $minutes * 60;
-
-        $minutesAvecSouSansS = $minutes > 1 ? " minutes " : "minute";
-
-        $afficheDureeVie = $minutes . $minutesAvecSouSansS;
-
-        if ($secondes > 0) {
-            $secondesAvecSouSansS = $secondes > 1 ? " secondes" : " seconde";
-            $afficheDureeVie .= " et " . $secondes . $secondesAvecSouSansS;
-        }
-
-        return $afficheDureeVie;
-    }
-
-    public function convertDateNaissanceToDateTime($chaine) {
-
-        $date = new \DateTime();
-        $timeStamp = strtotime($chaine);
-        $date->setTimestamp($timeStamp);
-
-        $parser = new \IntlDateFormatter(
-            'fr_FR',
-            IntlDateFormatter::LONG,
-            IntlDateFormatter::NONE
-        );
-
-        return $parser->format($date);
-    }
+//    public function convertDateNaissanceToDateTime($chaine) {
+//
+//        $date = new \DateTime();
+//        $timeStamp = strtotime($chaine);
+//        $date->setTimestamp($timeStamp);
+//
+//        $parser = new \IntlDateFormatter(
+//            'fr_FR',
+//            IntlDateFormatter::LONG,
+//            IntlDateFormatter::NONE
+//        );
+//
+//        return $parser->format($date);
+//    }
 }

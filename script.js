@@ -1,3 +1,6 @@
+// localStorage.removeItem("femelleIdSelectionne")
+// localStorage.removeItem("maleIdSelectionne")
+
 var validationModification = document.querySelector(".update");
 
 if (validationModification != null) {
@@ -38,11 +41,8 @@ function randomChange(genre) {
 
     let id;
 
-    if(genre === 2) {
-        id = document.getElementById("idFemelle").innerText;
-    } else {
-        id = document.getElementById("idMale").innerText;
-    }
+    if(genre === 2) id = document.getElementById("idFemelle").innerText;
+    else id = document.getElementById("idMale").innerText;
 
     xmlhttp.open("GET", "ajax/changeRandom.php?id=" + id + "&genre=" + genre, true);
 
@@ -73,6 +73,9 @@ function getLocalStoragetoSession() {
 
     let idFemelle = localStorage.getItem("femelleIdSelectionne")
     let idMale = localStorage.getItem("maleIdSelectionne")
+
+    console.log(idFemelle)
+    console.log(idMale)
 
     xmlhttp.open("GET", "ajax/ajaxSessionLoveRoom.php?idFemelle=" + idFemelle + "&idMale=" + idMale, true);
 

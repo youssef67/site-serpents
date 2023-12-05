@@ -49,7 +49,7 @@
             </div>
         </div>
         <div class="col-2 d-flex align-items-center justify-content-center">
-            <button onclick="accoupler()">accoupler</button>
+            <button onclick="accoupler()" class="btn_accoupler">accoupler</button>
         </div>
         <div class="card col-3">
             <img src="/img/snake-img/snake-2.png" class="card-img-top" id="photoFemelle"/>

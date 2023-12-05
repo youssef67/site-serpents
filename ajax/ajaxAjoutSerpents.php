@@ -108,23 +108,29 @@ for ($i = 0; $i < $nbOfSnakesToCreate; $i++) {
     $s->set("id_race", $arr_race_int[$raceRandomIndex]);
     $s->set("genre", $arr_gender_int[$genderRandomIndex]);
     $s->set("poids", rand(0, 20000));
-    $s->set("duree_vie", rand(0, 960));
 
+    $dureeVie = rand(2, 15);
+    $s->set("duree_vie", $dureeVie);
 
     //Création d'une date de début en chaine de caractère
     $dateStart = new DateTime("NOW");
-    $dateStartToString = $dateStart->format("Y-m-d");
+    $dateStartToString = $dateStart->format("d-m-Y H:i:s");
 
     //Création d'une date de fin en chaine de caractère
     $dateEnd = $dateStart->modify('+3 day');
-    $dateEndToString = $dateEnd->format("Y-m-d");
+    $dateEndToString = $dateEnd->format("d-m-Y H:i:s");
 
     //Generation d'un timeStamp aléatoire
     $randomTimeStamp = rand(strtotime($dateStartToString), strtotime($dateEndToString));
-    $randomDate = date('Y-m-d', $randomTimeStamp);
+    $randomDate = date('Y-m-d H:i:s', $randomTimeStamp);
     //Generation d'une date aleatoire
-
     $s->set("date_naissance", $randomDate);
+
+    //calcul de la date de mort
+    $date = new DateTime($randomDate);
+    $dateMort = $date->modify('+' . $dureeVie . ' minutes');
+    $dateMortToString = $dateMort->format('Y-m-d H:i:s');
+    $s->set("date_mort", date('Y-m-d H:i:s', strtotime($dateMortToString)));
 }
 
 $_SESSION["currentPage"] = 1;
