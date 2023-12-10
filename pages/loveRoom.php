@@ -1,5 +1,6 @@
 <script>
     window.onload = function() {
+        miseAjourSerpentMort();
         getLocalStoragetoSession();
     }
 </script>
@@ -41,9 +42,9 @@
     <div class="row mt-1">
         <div class="col-2"></div>
         <div class="card col-3">
-            <img src="/img/snake-img/snake-1.png" class="card-img-top" id="photoMale"/>
+            <img src="/img/others/choisir-male.png" class="card-img-top" id="photoMale"/>
             <div class="card-body text-center">
-                <h5 class="card-title">Mâle sélectionné</h5>
+                <h5 class="card-title-male-loveRoom">Mâle sélectionné</h5>
                 <p id="idMale" style="display: none"></p>
                 <p class="card-text" id="nomMaleLoveRoom"></p>
             </div>
@@ -52,10 +53,10 @@
             <button onclick="accoupler()" class="btn_accoupler">accoupler</button>
         </div>
         <div class="card col-3">
-            <img src="/img/snake-img/snake-2.png" class="card-img-top" id="photoFemelle"/>
+            <img src="/img/others/choisir-femelle.png" class="card-img-top" id="photoFemelle"/>
             <div class="card-body text-center">
-                <h5 class="card-title">Femelle Sélectionnée</h5>
-                <p id="idFemelle" style="display: none"></p>
+                <h5 class="card-title-femelle-loveRoom">Femelle Sélectionnée</h5>
+                <p id="idFemelle" style="-display: none"></p>
                 <p class="card-text" id="nomFemelleLoveRoom"></p>
             </div>
         </div>

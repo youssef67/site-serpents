@@ -89,7 +89,6 @@ body {
 #lstSnakes {
     margin-left: 5%;
     margin-right: 5%;
-  /*border: 5px solid black;*/
     margin-bottom: 5%;
     margin-top: 2%;
 }
@@ -109,6 +108,27 @@ body {
     height: 50px;
     font-family: helvetica;
     font-size: 20px;
+}
+
+.btn-reactualiser {
+
+    display: inline-block;
+    outline: 0;
+    cursor: pointer;
+    text-align: center;
+    border: 0;
+    padding: 7px 16px;
+    min-height: 36px;
+    min-width: 36px;
+    color: #ffffff;
+    background: #008060;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.btn-reactualiser:hover {
+    color: white;
 }
 
 .btn-list:hover {

@@ -50,9 +50,9 @@ if(isset($_POST["sub_snake"])) {
         }
     }
 ?>
-<!--    <script>-->
-<!--        window.location = 'index.php?page=vivarium&update=true';-->
-<!--    </script>-->
+    <script>
+        window.location = 'index.php?page=vivarium&update=true';
+    </script>
 <?php
 }
 

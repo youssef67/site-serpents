@@ -112,25 +112,16 @@ for ($i = 0; $i < $nbOfSnakesToCreate; $i++) {
     $dureeVie = rand(2, 15);
     $s->set("duree_vie", $dureeVie);
 
-    //Création d'une date de début en chaine de caractère
-    $dateStart = new DateTime("NOW");
-    $dateStartToString = $dateStart->format("d-m-Y H:i:s");
+    //Création d'une date de naissance NOW pour l'ensemble des serpents
+    $dateNaissance = new DateTime("NOW");
 
-    //Création d'une date de fin en chaine de caractère
-    $dateEnd = $dateStart->modify('+3 day');
-    $dateEndToString = $dateEnd->format("d-m-Y H:i:s");
-
-    //Generation d'un timeStamp aléatoire
-    $randomTimeStamp = rand(strtotime($dateStartToString), strtotime($dateEndToString));
-    $randomDate = date('Y-m-d H:i:s', $randomTimeStamp);
-    //Generation d'une date aleatoire
-    $s->set("date_naissance", $randomDate);
+    //Ajout en BDD
+    $s->set("date_naissance", $dateNaissance->format("Y-m-d H:i:s"));
 
     //calcul de la date de mort
-    $date = new DateTime($randomDate);
+    $date = new DateTime($dateNaissance->format("Y-m-d H:i:s"));
     $dateMort = $date->modify('+' . $dureeVie . ' minutes');
-    $dateMortToString = $dateMort->format('Y-m-d H:i:s');
-    $s->set("date_mort", date('Y-m-d H:i:s', strtotime($dateMortToString)));
+    $s->set("date_mort", $dateMort->format('Y-m-d H:i:s'));
 }
 
 $_SESSION["currentPage"] = 1;

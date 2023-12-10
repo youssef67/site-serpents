@@ -1,3 +1,8 @@
+<script>
+    window.onload = function() {
+        miseAjourSerpentMort();
+    }
+</script>
 <?php
 require_once("classes/Bdd.php");
 require_once("classes/Race.php");
@@ -17,7 +22,7 @@ $a->deleteEntriesNull();
 $races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
 
 // On determine sur quelle page on se trouve
-if(!isset($_SESSION["currentPage"])) $_SESSION["currentPage"] = 1;
+$_SESSION["currentPage"] = 1;
 
 //Nombre de serpents par page
 $parPage = 5;
@@ -30,7 +35,12 @@ $premier = ($_SESSION["currentPage"] * $parPage) - $parPage;
 
 //Affichage des serpents valides et présent en BDD
 $lstAnimal = $a->selectAll($premier, $parPage);
-//$lstAnimalId = $a->selectOnlyIdAll($premier, $parPage);
+
+//Variables permettant de définir si on se trouve sur une page qui affiche les serpents morts ou les serpents vivants
+//Si Serpents mort = true
+//Si serpents vivant = false
+$_SESSION["current_url"] = "vivarium";
+
 ?>
 <!-- Mise en place de la bannière afin de confirmer la modification -->
 <?php if (isset($_GET["update"]) && $_GET["update"] === true) { ?>
@@ -40,7 +50,7 @@ $lstAnimal = $a->selectAll($premier, $parPage);
     </div>
 </div>
 <?php } ?>
-
+<div id="display"></div>
 <!-- Affichage du nombre de mâle et de femelle dans la liste-->
 <div class="row mt-5 text-center">
     <h3 class="col-3 fancy">
@@ -123,6 +133,7 @@ $lstAnimal = $a->selectAll($premier, $parPage);
 </div>
 <div id="lstSnakes">
 <?php if (count($lstAnimal) > 0) {
+
     require "components/tableSnakeHead.php";
 
     foreach ($lstAnimal as $animal) {
@@ -140,7 +151,7 @@ $lstAnimal = $a->selectAll($premier, $parPage);
 } else { ?>
         <div class="row p-5 text-center" >
             <div class="alert alert-success col-md-6 offset-md-3 justify-content-center" role="alert">
-                    Pas de serpents enregistrés
+                    Pas de serpents enregixxstrés
             </div>
         </div>
 <?php } ?>

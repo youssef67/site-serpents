@@ -22,8 +22,20 @@ class Animal
     public function selectAll($premier, $parPage) {
         return $this->conn->execRequest("SELECT * FROM 
              `" . $this->table . "` 
-             WHERE delete_at IS NULL 
+             WHERE delete_at IS NULL
              ORDER BY `nom` ASC LIMIT " . $premier . ", " . $parPage);
+    }
+
+    public function selectAllDeadSnake($premier, $parPage) {
+        return $this->conn->execRequest("SELECT * FROM 
+             `" . $this->table . "` 
+             WHERE delete_at IS NOT NULL 
+             ORDER BY `nom` ASC LIMIT " . $premier . ", " . $parPage);
+    }
+
+    public function selectCountAllDeadSnake() {
+        $res = $this->conn->execRequest("SELECT COUNT(*) AS nbSnake FROM `" . $this->table . "` WHERE delete_at IS NOT NULL");
+        return $res[0]["nbSnake"];
     }
 
     public function selectOnlyIdAll($premier, $parPage) {
@@ -42,7 +54,7 @@ class Animal
     }
 
     public function selectById($id) {
-        $res = $this->conn->execRequest("SELECT * FROM `" . $this->table . "` WHERE id_animal LIKE " . $id);
+        $res = $this->conn->execRequest("SELECT * FROM `" . $this->table . "` WHERE id_animal LIKE " . $id . " AND delete_at IS NULL");
         return $res;
     }
 

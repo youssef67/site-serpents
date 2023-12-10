@@ -1,6 +1,8 @@
 // localStorage.removeItem("femelleIdSelectionne")
 // localStorage.removeItem("maleIdSelectionne")
 
+console.log(localStorage)
+
 var validationModification = document.querySelector(".update");
 
 if (validationModification != null) {
@@ -13,30 +15,80 @@ function accoupler() {
     let idFemelle = document.getElementById("idFemelle").innerText
     let idMale = document.getElementById("idMale").innerText
 
+    if (idFemelle === "" || idMale === "") {
+        let info = document.getElementById("info");
+        document.getElementById("info-text").innerText = "Un bébé ne se fait pas tout seul !!!";
+
+        info.style.display = "block";
+
+        setTimeout(function () {
+            info.style.display = "none";
+        }, 6000)
+    } else {
+        var xmlhttp = new XMLHttpRequest();
+
+        xmlhttp.open("GET", "ajax/ajaxAccouplement.php?idFemelle=" + idFemelle + "&idMale=" + idMale, true);
+
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200)
+            {
+                var data = JSON.parse(this.responseText);
+
+                let info = document.getElementById("info");
+                document.getElementById("info-text").innerText = "Le serpent " + data.nomEnfant + " a vu le jour, longue vie à lui";
+
+                info.style.display = "block";
+
+                setTimeout(function () {
+                    info.style.display = "none";
+                }, 6000)
+            }
+        }
+
+        xmlhttp.send();
+    }
+
+}
+
+function miseAjourSerpentMort() {
     var xmlhttp = new XMLHttpRequest();
 
-    xmlhttp.open("GET", "ajax/ajaxAccouplement.php?idFemelle=" + idFemelle + "&idMale=" + idMale, true);
+    xmlhttp.open("GET", "ajax/ajaxSerpentsMorts.php", true)
 
     xmlhttp.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200)
-        {
-            var data = JSON.parse(this.responseText);
+        if (this.readyState === 4 && this.status === 200) {
 
-            let info = document.getElementById("info");
-            document.getElementById("info-text").innerText = "Le serpent " + data.nomEnfant + " a vu le jour, longue vie à lui";
-
-            info.style.display = "block";
-
-            setTimeout(function () {
-                info.style.display = "none";
-            }, 6000)
         }
     }
 
     xmlhttp.send();
 }
 
+
+//Verification si le serpent est mort
+function checkIfSnakeIsDead(id) {
+
+
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.open("GET", "ajax/checkIfSnakeIsDead.php?id=" + id, true);
+
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200)
+        {
+
+        }
+    }
+
+    xmlhttp.send();
+
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//Si utilisateur souhaite changer de serpent, selection aleatoire
 function randomChange(genre) {
+    miseAjourSerpentMort()
+
     var xmlhttp = new XMLHttpRequest();
 
     let id;
@@ -51,14 +103,30 @@ function randomChange(genre) {
         {
             var data = JSON.parse(this.responseText);
 
-            if(data.genre === 2) {
-                document.getElementById("nomFemelleLoveRoom").innerHTML = data.serpentNom;
-                document.getElementById("photoFemelle").src = '../img/snake-img/' + data.serpentPhoto;
-                document.getElementById("idFemelle").innerHTML = data.idSerpent;
+            console.log(data.length === 0)
+            if (data.length === 0) {
+                let info = document.getElementById("info");
+
+                if(genre === 2)
+                    document.getElementById("info-text").innerText = "Plus de femelles disponibles";
+                else
+                    document.getElementById("info-text").innerText = "Plus de mâles disponibles";
+
+                info.style.display = "block";
+
+                setTimeout(function () {
+                    info.style.display = "none";
+                }, 6000)
             } else {
-                document.getElementById("nomMaleLoveRoom").innerHTML = data.serpentNom;
-                document.getElementById("photoMale").src = '../img/snake-img/' + data.serpentPhoto;
-                document.getElementById("idMale").innerHTML = data.idSerpent;
+                if(data.genre === 2) {
+                    document.getElementById("nomFemelleLoveRoom").innerHTML = data.serpentNom;
+                    document.getElementById("photoFemelle").src = '../img/snake-img/' + data.serpentPhoto;
+                    document.getElementById("idFemelle").innerHTML = data.idSerpent;
+                } else {
+                    document.getElementById("nomMaleLoveRoom").innerHTML = data.serpentNom;
+                    document.getElementById("photoMale").src = '../img/snake-img/' + data.serpentPhoto;
+                    document.getElementById("idMale").innerHTML = data.idSerpent;
+                }
             }
         }
     }
@@ -84,14 +152,24 @@ function getLocalStoragetoSession() {
         {
             var data = JSON.parse(this.responseText);
 
-            document.getElementById("nomFemelleLoveRoom").innerHTML = data.nomFemelle;
-            document.getElementById("nomMaleLoveRoom").innerHTML = data.nomMale;
+            console.log(data.idMale)
 
-            document.getElementById("idFemelle").innerHTML = data.idFemelle;
-            document.getElementById("idMale").innerHTML = data.idMale;
+            if(data.nomFemelle !== undefined) {
+                document.getElementById("nomFemelleLoveRoom").innerHTML = data.nomFemelle;
+                document.getElementById("idFemelle").innerHTML = data.idFemelle;
+                document.getElementById("photoFemelle").src = '../img/snake-img/' + data.photoFemelle;
+            } else {
+                document.querySelector(".card-title-femelle-loveRoom").innerHTML = "Veuillez choisir une femelle via la liste"
+            }
 
-            document.getElementById("photoFemelle").src = '../img/snake-img/' + data.photoFemelle;
-            document.getElementById("photoMale").src = '../img/snake-img/' + data.photoMale;
+            if(data.nomMale !== undefined) {
+                document.getElementById("nomMaleLoveRoom").innerHTML = data.nomMale;
+                document.getElementById("idMale").innerHTML = data.idMale;
+                document.getElementById("photoMale").src = '../img/snake-img/' + data.photoMale;
+            } else {
+                document.querySelector(".card-title-male-loveRoom").innerHTML = "Veuillez choisir un mâle via la liste"
+            }
+
         }
     }
 
@@ -120,6 +198,28 @@ function validateForm() {
     }
 }
 
+
+//Vérifie si la localStorage est toujours d'actualité
+function checkIfLocalStoragStillOk(id, genre)  {
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.open("GET", "ajax/checkIfLocalStoragStillOk.php?id=" + id + "&genre=" + genre, true);
+
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200)
+        {
+            if (this.responseText === "notOk") {
+                if (genre === 1) localStorage.removeItem("femelleIdSelectionne")
+                else localStorage.removeItem(("maleIdSelectionne"))
+            }
+        }
+    }
+
+    xmlhttp.send();
+
+
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //Function permettant de verifier l'état de la session selon le serpent sélectionné
 // 3 traitements
@@ -128,13 +228,17 @@ function validateForm() {
 //      3 - l'id de session est différent de l'id selectionné ----> on confirme le changement
 function checkSnakeSelected(id, genre) {
     //Récupération de la div qui gère les messages
+
     let validationModification = document.querySelector(".confirmSelectedSnake");
     let content = document.querySelector(".content-confirmSelectedSnake");
 
     // Traitement dans le cas si c'est une femelle
         if(parseInt(genre) === 1) {
+
             var femelleIdSelectionne = localStorage.getItem("femelleIdSelectionne")
+
             //Si la variable serpent femelle de session est null, cela veut dire que aucun serpent n'est actuellement en selection
+            //On vérifie que l'id stocké en local storage est toujours d'actualité
             if(femelleIdSelectionne === null) {
             //on va envoyer l'id pour qu'un script PHP fasse l'enregistrement en session
                 localStorage.setItem("femelleIdSelectionne", id)
@@ -160,12 +264,27 @@ function checkSnakeSelected(id, genre) {
             }
             // Si l'id session est différent de l'id selectionné / on confirme le changement d'id
             else {
-                confirmChangeSelection(id, genre, femelleIdSelectionne)
+                checkIfLocalStoragStillOk(localStorage.getItem("femelleIdSelectionne"), 1);
+
+                if (localStorage.getItem("femelleIdSelectionne") === null) {
+                    localStorage.setItem("femelleIdSelectionne", id)
+
+                    content.innerHTML = "Femelle sélectionné pour la love room";
+                    validationModification.style.display = "block";
+                    setTimeout(function () {
+                        validationModification.style.display = "none";
+                    }, 3000)
+                } else {
+                    console.log(femelleIdSelectionne)
+                    console.log(id)
+                    confirmChangeSelection(id, genre, femelleIdSelectionne)
+                }
+
             }
         } else {
+            checkIfLocalStoragStillOk(localStorage.getItem("maleIdSelectionne"), 2);
+
             var maleIdSelectionne = localStorage.getItem("maleIdSelectionne")
-            console.log(maleIdSelectionne)
-            console.log(id)
 
             if(maleIdSelectionne === null) {
                 //on va envoyer l'id pour qu'un script PHP fasse l'enregistrement en session
@@ -197,7 +316,6 @@ function checkSnakeSelected(id, genre) {
         }
 }
 
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //Function permettant l'enregistrement du serpent dans la variable de session
 function enregistrementSerpentSession(snakeSelected, genreSelected) {
@@ -226,14 +344,20 @@ function enregistrementSerpentSession(snakeSelected, genreSelected) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //Function permettant de confirmer le changement de la sélection pour la love room
-function confirmChangeSelection(id, gender, idSerpentLocalStorage) {
+function confirmChangeSelection(id, gender, idLocalStorage) {
+    console.log("confirme change selection")
+    console.log(id)
+    console.log(gender)
+    console.log(idLocalStorage)
     var xmlhttp = new XMLHttpRequest();
 
-    xmlhttp.open("GET", "ajax/confirmChangeSelection.php?id=" + id + "&gender=" + gender + "&idSession=" + idSerpentLocalStorage, true);
+    xmlhttp.open("GET", "ajax/confirmChangeSelection.php?id=" + id + "&gender=" + gender + "&idLocalStorage=" + idLocalStorage, true);
 
     xmlhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200)
         {
+            document.getElementById("display").innerText = this.responseText;
+
             var data = JSON.parse(this.responseText);
             // Si pas undefined /
             //Cela veut dire qu'on a cliqué sur un serpent qui n'est pas l'id du serpent en session
@@ -340,7 +464,14 @@ function modifierEtatFerme() {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //Function permettant la pagination
-function ajaxPagination(nextPage= "") {
+function ajaxPagination(nextPage= "", pourSerpentMort = false) {
+    //Avant d'effectuer la pagination on met a jour la liste pour les serpents vivvant et les serpents morts
+    miseAjourSerpentMort()
+
+    //Si page vivarium // mise a jour de letat de la ferme
+    if(pourSerpentMort === false)
+        modifierEtatFerme();
+
     var xmlhttp;
     if(window.XMLHttpRequest) {
         xmlhttp = new XMLHttpRequest();
@@ -348,7 +479,14 @@ function ajaxPagination(nextPage= "") {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
     }
 
-    xmlhttp.open("GET", "ajax/pagination.php?nextPage=" + nextPage, true)
+    if (pourSerpentMort) {
+        console.log("serpents morts")
+        xmlhttp.open("GET", "ajax/paginationSerpentsMorts.php?nextPage=" + nextPage, true)
+    }
+    else {
+        console.log("serpents vivants")
+        xmlhttp.open("GET", "ajax/pagination.php?nextPage=" + nextPage, true)
+    }
 
     // Déclaration de l'event listener pour l'event readyStateChange event
     xmlhttp.onreadystatechange = function() {

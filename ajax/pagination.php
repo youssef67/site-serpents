@@ -34,7 +34,6 @@ if (isset($_SESSION["nb_resultat_filtre"])) {
 }
 else {
     $lstAnimal = $a->selectAll($premier, $parPage);
-    $lstAnimalId = $a->selectOnlyIdAll($premier, $parPage);
 }
 
 $_SESSION["currentPage"] = $_GET["nextPage"];
@@ -51,4 +50,6 @@ if (count($lstAnimal) > 0) {
 
     require "../components/tableSnakeEnd.php";
     require "../components/pagination.php";
+} else {
+    echo "plus de serpents --- pagination.php";
 }
