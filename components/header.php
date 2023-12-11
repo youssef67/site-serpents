@@ -103,11 +103,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="mb-4">
-                    <p>Actuellement en sélection : </p>
+                <div class="mb-4 text-center">
+                    <p style="text-decoration: underline; font-weight: bold">Actuellement en sélection : </p>
                     <p>Nom : <span id="alreadySelected_name"></span></p>
                     <p>Race : <span id="alreadySelected_race"></span></p>
-                    <p class="mt-2">Remplace par : </p>
+                    <p class="mt-2" style="text-decoration: underline; font-weight: bold">Remplacé par : </p>
                     <p>Nom : <span id="newSelected_name"></span> </p>
                     <p>Race : <span id="newSelected_race"></span></p>
                     <!-- On affiche dans le DOM l'id du serpent qui va peut etre envoyer en loveroom-->

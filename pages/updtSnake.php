@@ -5,8 +5,10 @@ require_once("classes/Race.php");
 $s = new \classes\Animal($_GET["id"]);
 $conn = new \classes\Bdd();
 
+// Récupération des races disponibles + id correspondant
+$races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
+
 if(isset($_POST["sub_snake"])) {
-//    var_dump($_POST);
     //Créer un tableau avec les noms des fichiers d'images
     if ($s->get("path_img") == null) {
         $dir = "img/snake-img";
@@ -49,26 +51,41 @@ if(isset($_POST["sub_snake"])) {
             $s->set($key, $value);
         }
     }
+
+    if ($_GET['id'] === "new") {
 ?>
-    <script>
-        window.location = 'index.php?page=vivarium&update=true';
-    </script>
+        <script>
+            window.location = 'index.php?page=vivarium';
+            localStorage.setItem("operation", "new")
+        </script>
 <?php
+    } else {
+?>
+        <script>
+            window.location = 'index.php?page=vivarium';
+            localStorage.setItem("operation", "update")
+        </script>
+<?php
+    }
 }
 
-//Si update d'un serpent, on calcul la durée de vie en minutes + secondes
-$secondes = $s->get("duree_vie");
-$minutes = floor($secondes / 60);
-$secondes -= $minutes * 60;
-
-// Récupération des races disponibles + id correspondant
-$races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
+// Création d'une date qui indique l'instant présent et qui permet de pré-remplir le champq de la date
+$dateTemp = strtotime("now");
+$dateTempToString = date("Y-m-d H:i:s", $dateTemp);
 
 ?>
 <div class="row">
     <form action="" method="POST" class="col">
         <div class="card-body p-5 text-center">
-            <h1 class="fw-bold mb-0">Bienvenu dans la création d'un serpent</h1>
+            <?php
+                if ($_GET['id'] === "new") {
+            ?>
+                <h1 class="fw-bold mb-0">Création d'un serpent</h1>
+            <?php
+                } else {
+            ?>
+                <h1 class="fw-bold mb-0">Modification de <?= $s->get("nom") ?></h1>
+            <?php } ?>
               <img src="../img/others/serpent-formulaire.png"
                    class="rounded-circle mt-5"
                    style="width: 100px; height: 100px"
@@ -98,7 +115,7 @@ $races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
                   <div class="col d-flex justify-content-start align-items-center">
                       <label class="form-label" for="naissance" id="input-date" style="margin-right: 20px; width: 50%; white-space: nowrap;">Veuillez définir la date de naissance</label>
                       <div class="form-outline">
-                          <input type="datetime-local" id="naissance" class="form-control" name="date_naissance" value="<?= $s->get("date_naissance") ?>"/>
+                          <input type="datetime-local" id="naissance" class="form-control" name="date_naissance" value="<?= empty($s->get("date_naissance")) ? $dateTempToString : $s->get("date_naissance") ?>"/>
                       </div>
                   </div>
                   <div class="col">
@@ -134,12 +151,12 @@ $races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
                                   type="range" class="form-range"
                                   id="customRange1" min="2"
                                   max="15"
-                                  value="<?= $minutes ?>"
+                                  value="<?= $s->get("duree_vie") ?>"
                           />
                       </div>
                   </div>
               </div>
-            <input class="btn btn-primary btn-lg btn-rounded gradient-custom text-body px-5 mb-5 mt-5" type="submit" name="sub_snake" value="Enregistrer"/>
+            <input class="btn btn-primary btn-lg btn-rounded gradient-custom text-body px-5 mb-5 mt-5" type="submit" name="sub_snake" value="Enregistrer" style="color: white !important;"/>
           </div>
     </form>
 </div>

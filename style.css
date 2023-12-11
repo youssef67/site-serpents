@@ -97,6 +97,15 @@ body {
     color: white;
 }
 
+.nav-link:hover {
+    cursor: pointer;
+}
+
+.random-img {
+    height: 50px;
+    width: 50px;
+}
+
 .btn_accoupler {
     background: linear-gradient(90deg, rgba(50,159,19,1) 0%, rgba(138,150,12,1) 35%, rgba(0,189,255,1) 100%);
     border-radius: 50px;

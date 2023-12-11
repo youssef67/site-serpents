@@ -43,8 +43,6 @@ if (!empty($name) || !empty($race) || !empty($genre)) {
         if ($i != count($keys) - 1) $conditions[$i] .= " AND ";
     }
 
-    var_dump($conditions);
-
     //Séparation du tableau des conditions en chaine de caractères
     $whereValues = implode(" ", $conditions);
 

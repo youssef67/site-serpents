@@ -24,7 +24,7 @@
         <div class="col-3 align-items-end">
             <div class="row justify-content-center">
                 <div class="col-2 dice">
-                    <img src="/img/others/dice.png" class="card-img-top" alt="" onclick="randomChange(1)"/>
+                    <img src="/img/others/dice.png" class="card-img-top random-img" alt="" onclick="randomChange(2)"/>
                 </div>
             </div>
         </div>
@@ -33,7 +33,7 @@
         <div class="col-3 align-items-end">
             <div class="row justify-content-center">
                 <div class="col-2 dice">
-                    <img src="/img/others/dice.png" class="card-img-top" alt="" onclick="randomChange(2)"/>
+                    <img src="/img/others/dice.png" class="card-img-top random-img" alt="" onclick="randomChange(1)"/>
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@
             <img src="/img/others/choisir-femelle.png" class="card-img-top" id="photoFemelle"/>
             <div class="card-body text-center">
                 <h5 class="card-title-femelle-loveRoom">Femelle Sélectionnée</h5>
-                <p id="idFemelle" style="-display: none"></p>
+                <p id="idFemelle" style="display: none"></p>
                 <p class="card-text" id="nomFemelleLoveRoom"></p>
             </div>
         </div>

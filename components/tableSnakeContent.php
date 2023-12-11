@@ -29,8 +29,8 @@ echo "<tr>
             "</td>
         <td>";
 
-        echo "<a type='button' class='btn btn-list' style='background-color: #0B486B' onclick='checkSnakeSelected(" . $animal["id_animal"] . ", " .$animal["genre"] .")'><i class='bi bi-arrow-through-heart-fill'></i></a>
-              <a type='button' class='btn btn-warning' href='../index.php?page=updtSnake&id=" . $animal["id_animal"] . "'><i class='bi bi-pencil'></i></a>
-              <a type='button' class='btn btn-danger' onclick='deleteSerpent(". $animal["id_animal"] .")'  ><i class='bi bi-trash'></i></a>
+        echo "<a type='button' id='btn-selectionLoveRoom' class='btn btn-list' style='background-color: #0B486B' onclick='checkSnakeSelected(" . $animal["id_animal"] . ", " .$animal["genre"] .")'><i class='bi bi-arrow-through-heart-fill'></i></a>
+              <a type='button' id='btn-editerSerpent' class='btn btn-warning' href='../index.php?page=updtSnake&id=" . $animal["id_animal"] . "'><i class='bi bi-pencil'></i></a>
+              <a type='button' id='btn-supprimerSerpent' class='btn btn-danger' onclick='deleteSerpent(". $animal["id_animal"] .")'  ><i class='bi bi-trash'></i></a>
         </td>
     </tr>";
