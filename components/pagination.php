@@ -15,7 +15,10 @@ $DieOrlive = $_SESSION["current_url"] === "vivarium" ? false : true;
 if($DieOrlive) {
     $pages = ceil($a->selectCountAllDeadSnake() / 5);
 } else {
-    $pages =  ceil($a->selectCountAll() / 5);
+    if (isset($_SESSION["nb_resultat_filtre"]))
+        $pages = ceil($_SESSION["nb_resultat_filtre"] / 5);
+    else
+        $pages = ceil($a->selectCountAll() / 5);
 }
 
 echo "<div class='row justify-content-md-center mt-3'>
