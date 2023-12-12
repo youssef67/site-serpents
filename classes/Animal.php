@@ -38,21 +38,6 @@ class Animal
         return $res[0]["nbSnake"];
     }
 
-    public function selectOnlyIdAll($premier, $parPage) {
-        $res =  $this->conn->execRequest("SELECT id_animal FROM 
-             `" . $this->table . "` 
-             WHERE delete_at IS NULL 
-             ORDER BY `nom` ASC LIMIT " . $premier . ", " . $parPage);
-
-        $arrId = [];
-
-        foreach ($res as $animal) {
-            array_push($arrId, $animal["id_animal"]);
-        }
-
-        return $arrId;
-    }
-
     public function selectById($id) {
         $res = $this->conn->execRequest("SELECT * FROM `" . $this->table . "` WHERE id_animal LIKE " . $id . " AND delete_at IS NULL");
         return $res;
@@ -82,36 +67,4 @@ class Animal
         return $res[0]["nbSnake"];
     }
 
-//    public function convertDureeVieEnString ($number) {
-//        $secondes = $number;
-//
-//        $minutes = floor($secondes / 60);
-//        $secondes -= $minutes * 60;
-//
-//        $minutesAvecSouSansS = $minutes > 1 ? " minutes " : "minute";
-//
-//        $afficheDureeVie = $minutes . $minutesAvecSouSansS;
-//
-//        if ($secondes > 0) {
-//            $secondesAvecSouSansS = $secondes > 1 ? " secondes" : " seconde";
-//            $afficheDureeVie .= " et " . $secondes . $secondesAvecSouSansS;
-//        }
-//
-//        return $afficheDureeVie;
-//    }
-
-//    public function convertDateNaissanceToDateTime($chaine) {
-//
-//        $date = new \DateTime();
-//        $timeStamp = strtotime($chaine);
-//        $date->setTimestamp($timeStamp);
-//
-//        $parser = new \IntlDateFormatter(
-//            'fr_FR',
-//            IntlDateFormatter::LONG,
-//            IntlDateFormatter::NONE
-//        );
-//
-//        return $parser->format($date);
-//    }
 }

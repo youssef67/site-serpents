@@ -1,5 +1,18 @@
 // localStorage.removeItem("femelleIdSelectionne")
-// localStorage.removeItem("maleSelectionne")
+// localStorage.removeItem("maleIdSelectionne")
+
+console.log(localStorage)
+
+let feuVert = document.getElementById("feuVertLove")
+
+if (localStorage.getItem("femelleIdSelectionne") !== null
+    && localStorage.getItem("maleIdSelectionne") !== null) {
+    feuVert.style.display = "block";
+}
+
+tippy("#btn-getFamille", {
+    content: "Arbre généalogique"
+});
 
 tippy("#btn-selectionLoveRoom", {
     content: "Envoyer en love room"
@@ -13,6 +26,9 @@ tippy("#btn-supprimerSerpent", {
     content: "Supprimer le serpent"
 });
 
+function getFamille() {
+    console.log("toto")
+}
 function displayNotif(type) {
     let operation = localStorage.getItem("operation");
 
@@ -53,20 +69,25 @@ function accoupler() {
             {
                 var data = JSON.parse(this.responseText);
 
+
                 swal({
                     text: "Le serpent " + data.nomEnfant + "a vu le jour, longue vie à lui",
                     icon: "success",
-                    timer: 3000
+                }).then(function(result) {
+                    if(true) {
+                        localStorage.removeItem("femelleIdSelectionne")
+                        localStorage.removeItem("maleIdSelectionne")
+                        window.location.href= "index.php?page=vivarium"
+                    }
                 })
             }
         }
 
         xmlhttp.send();
     }
-
 }
 
-function miseAjourSerpentMort(type) {
+function miseAjourSerpentMort() {
     var xmlhttp = new XMLHttpRequest();
 
     xmlhttp.open("GET", "ajax/ajaxSerpentsMorts.php", true)
@@ -76,31 +97,6 @@ function miseAjourSerpentMort(type) {
             checkIfLocalStoragStillOk();
 
             displayNotif();
-
-            // swal({
-            //     text: "Le serpent longue vie à lui",
-            //     icon: "success",
-            //     timer: 3000
-            // })
-        }
-    }
-
-    xmlhttp.send();
-}
-
-
-//Verification si le serpent est mort
-function checkIfSnakeIsDead(id) {
-
-
-    var xmlhttp = new XMLHttpRequest();
-
-    xmlhttp.open("GET", "ajax/checkIfSnakeIsDead.php?id=" + id, true);
-
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200)
-        {
-
         }
     }
 
@@ -243,79 +239,55 @@ function checkIfLocalStoragStillOk(id, genre)  {
 //      2 - li de session est égal à l'id selectionné ----> on précise à l'utilisateur que ce dernier est déjà en selection
 //      3 - l'id de session est différent de l'id selectionné ----> on confirme le changement
 function checkSnakeSelected(id, genre) {
-    //Récupération de la div qui gère les messages
+    miseAjourSerpentMort()
 
-    let validationModification = document.querySelector(".confirmSelectedSnake");
-    let content = document.querySelector(".content-confirmSelectedSnake");
+    checkIfSnakeIsDead(id).then((value) => {
+        if(value === '1') {
+            // Traitement dans le cas si c'est une femelle
+            if(parseInt(genre) === 1) {
+                var femelleIdSelectionne = localStorage.getItem("femelleIdSelectionne")
 
-    // Traitement dans le cas si c'est une femelle
-        if(parseInt(genre) === 1) {
-            var femelleIdSelectionne = localStorage.getItem("femelleIdSelectionne")
-
-            //Si la variable serpent femelle de session est null, cela veut dire que aucun serpent n'est actuellement en selection
-            //On vérifie que l'id stocké en local storage est toujours d'actualité
-            if(femelleIdSelectionne === null) {
-            //on va envoyer l'id pour qu'un script PHP fasse l'enregistrement en session
-                localStorage.setItem("femelleIdSelectionne", id)
-
-                swal({
-                    text: "Femelle sélectionnée pour la love room",
-                    icon: "success",
-                    timer: 3000
-                })
-            }
-            //Si l'id de session est égal à l'id selectionné / On précise à l'utilisateur que le serpent est déjà en selection
-            else if(parseInt(femelleIdSelectionne) === id) {
-                swal({
-                    text: "Cette femelle est déjà présente dans la love room",
-                    icon: "warning",
-                    timer: 3000
-                })
-            }
-            // Si l'id session est différent de l'id selectionné / on confirme le changement d'id
-            else {
-                checkIfLocalStoragStillOk(localStorage.getItem("femelleIdSelectionne"), 1);
-
-                if (localStorage.getItem("femelleIdSelectionne") === null) {
+                //Si la variable serpent femelle de session est null, cela veut dire que aucun serpent n'est actuellement en selection
+                //On vérifie que l'id stocké en local storage est toujours d'actualité
+                if(femelleIdSelectionne === null) {
+                    //on va envoyer l'id pour qu'un script PHP fasse l'enregistrement en session
                     localStorage.setItem("femelleIdSelectionne", id)
 
                     swal({
-                        text: "Femelle sélectionné pour la love room",
+                        text: "Femelle sélectionnée pour la love room",
                         icon: "success",
                         timer: 3000
                     })
-                } else {
-                    confirmChangeSelection(id, genre, femelleIdSelectionne)
                 }
+                //Si l'id de session est égal à l'id selectionné / On précise à l'utilisateur que le serpent est déjà en selection
+                else if(parseInt(femelleIdSelectionne) === id) {
+                    swal({
+                        text: "Cette femelle est déjà présente dans la love room",
+                        icon: "warning",
+                        timer: 3000
+                    })
+                }
+                // Si l'id session est différent de l'id selectionné / on confirme le changement d'id
+                else {
+                    checkIfLocalStoragStillOk(localStorage.getItem("femelleIdSelectionne"), 1);
 
-            }
-        } else {
-            var maleIdSelectionne = localStorage.getItem("maleIdSelectionne")
+                    if (localStorage.getItem("femelleIdSelectionne") === null) {
+                        localStorage.setItem("femelleIdSelectionne", id)
 
-            if(maleIdSelectionne === null) {
-                //on va envoyer l'id pour qu'un script PHP fasse l'enregistrement en session
-                localStorage.setItem("maleIdSelectionne", id)
+                        swal({
+                            text: "Femelle sélectionné pour la love room",
+                            icon: "success",
+                            timer: 3000
+                        })
+                    } else {
+                        confirmChangeSelection(id, genre, femelleIdSelectionne)
+                    }
+                }
+            } else {
+                var maleIdSelectionne = localStorage.getItem("maleIdSelectionne")
 
-                swal({
-                    text: "Mâle sélectionné pour la love room",
-                    icon: "success",
-                    timer: 3000
-                })
-            }
-            //Si l'id de session est égal à l'id selectionné / On précise à l'utilisateur que le serpent est déjà en selection
-            else if(parseInt(maleIdSelectionne) === id) {
-
-                swal({
-                    text: "Ce mâle est déjà présent dans la love room",
-                    icon: "warning",
-                    timer: 3000
-                })
-            }
-            // Si l'id session est différent de l'id selectionné / on confirme le changement d'id
-            else {
-                checkIfLocalStoragStillOk(localStorage.getItem("maleIdSelectionne"), 2);
-
-                if (localStorage.getItem("maleIdSelectionne") === null) {
+                if(maleIdSelectionne === null) {
+                    //on va envoyer l'id pour qu'un script PHP fasse l'enregistrement en session
                     localStorage.setItem("maleIdSelectionne", id)
 
                     swal({
@@ -323,11 +295,67 @@ function checkSnakeSelected(id, genre) {
                         icon: "success",
                         timer: 3000
                     })
-                } else {
-                    confirmChangeSelection(id, genre, maleIdSelectionne)
+                }
+                //Si l'id de session est égal à l'id selectionné / On précise à l'utilisateur que le serpent est déjà en selection
+                else if(parseInt(maleIdSelectionne) === id) {
+
+                    swal({
+                        text: "Ce mâle est déjà présent dans la love room",
+                        icon: "warning",
+                        timer: 3000
+                    })
+                }
+                // Si l'id session est différent de l'id selectionné / on confirme le changement d'id
+                else {
+                    checkIfLocalStoragStillOk(localStorage.getItem("maleIdSelectionne"), 2);
+
+                    if (localStorage.getItem("maleIdSelectionne") === null) {
+                        localStorage.setItem("maleIdSelectionne", id)
+
+                        swal({
+                            text: "Mâle sélectionné pour la love room",
+                            icon: "success",
+                            timer: 3000
+                        })
+                    } else {
+                        confirmChangeSelection(id, genre, maleIdSelectionne)
+                    }
                 }
             }
+
+            var feuVert = document.getElementById("feuVertLove")
+
+            if (localStorage.getItem("femelleIdSelectionne") !== null
+                && localStorage.getItem("maleIdSelectionne") !== null) {
+                feuVert.style.display = "block";
+            }
+        } else {
+            swal({
+                text: "Désolé ce serpent est mort mais pas encore déclaré",
+                icon: "error",
+                timer: 3000
+            })
         }
+    })
+}
+
+//Verification si le serpent est mort
+function checkIfSnakeIsDead(id) {
+
+    var xmlhttp = new XMLHttpRequest();
+
+    return new Promise((resolve, reject) => {
+        xmlhttp.open("GET", "ajax/checkIfSnakeIsDead.php?id=" + id, true);
+
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200)
+            {
+                resolve(xmlhttp.responseText)
+            }
+        }
+
+        xmlhttp.send();
+    })
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

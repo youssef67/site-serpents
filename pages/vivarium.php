@@ -51,7 +51,6 @@ $_SESSION["current_url"] = "vivarium";
     </div>
 </div>
 <?php } ?>
-<div id="display"></div>
 <!-- Affichage du nombre de mâle et de femelle dans la liste-->
 <div class="row mt-5 text-center">
     <h3 class="col-3 fancy">
@@ -128,8 +127,14 @@ $_SESSION["current_url"] = "vivarium";
     </div>
 </div>
 <!-- Début de la liste des serpents-->
-<div class="row text-center" style="display: none" id="info">
-    <div class="alert alert-success col-md-6 offset-md-3 justify-content-center" role="alert" id="info-text">
+<div class="row mt-3" style="display: none" id="feuVertLove">
+    <div class='col d-flex justify-content-center'>
+        <a href="index.php?page=loveRoom"><img src='../img/others/coeur.png'
+        class='rounded-circle'
+        alt=''
+        style='width: 55px; height: 55px'
+        /></a>
+        <div class='ms-3 d-flex align-items-center'>En attente du feu vert</div>
     </div>
 </div>
 <div id="lstSnakes">
@@ -152,7 +157,7 @@ $_SESSION["current_url"] = "vivarium";
 } else { ?>
         <div class="row p-5 text-center" >
             <div class="alert alert-success col-md-6 offset-md-3 justify-content-center" role="alert">
-                    Pas de serpents enregixxstrés
+                    Pas de serpents enregistrés
             </div>
         </div>
 <?php } ?>

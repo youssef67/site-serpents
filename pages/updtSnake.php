@@ -5,68 +5,92 @@ require_once("classes/Race.php");
 $s = new \classes\Animal($_GET["id"]);
 $conn = new \classes\Bdd();
 
+echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+       <script>
+            function erreurForm() {
+                 swal({
+                        text: "L\'ensemble des champs doivent être complétés",
+                        icon: "error",
+                        timer: 4000
+                 })
+            }
+      </script>';
+
 // Récupération des races disponibles + id correspondant
 $races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
 
 if(isset($_POST["sub_snake"])) {
-    //Créer un tableau avec les noms des fichiers d'images
-    if ($s->get("path_img") == null) {
-        $dir = "img/snake-img";
-        $fileList = [];
 
-        if(is_dir($dir)) {
-            if ($dh = opendir($dir)) {
-                while (($file = readdir($dh)) !== false) {
-                    if ($file != "." && $file != "..") {
-                        $fileList[] = $file;
-                    }
-                }
-                closedir($dh);
-            }
-        } else {
-            var_dump("le dossier n'existe pas !");
-        }
+    if(empty($_POST["nom"]) ||
+        empty($_POST["id_race"]) ||
+        empty($_POST["date_naissance"]) ||
+        empty($_POST["genre"]) ||
+        empty($_POST["poids"]) ||
+        empty($_POST["duree_vie"])) {
 
-        // Selection d'un nom de fichier dans le tableau + ajout en BDD
-        $index = array_rand($fileList, 1);
-        $s->set("path_img", $fileList[$index]);
-    }
+        echo '<script>erreurForm();</script>';
 
-    $convertMinuteToSeconde = $_POST["duree_vie"] * 60;
-
-    $dateMortTimeStamp = strtotime($_POST["date_naissance"]) + $convertMinuteToSeconde;
-    $dateMortToString = date("d-m-Y H:i:s", $dateMortTimeStamp);
-
-    $date = new DateTime($dateMortToString);
-
-    $s->set("date_mort", $date->format("Y-m-d H:i:s"));
-
-    //Ajout du serpent en BDD
-    foreach ($_POST as $key => $value) {
-        if ($key != "sub_snake") {
-
-            //Conversion du poid en kgs en grammes
-            if ($key == "poids") $value = $value * 1000;
-
-            $s->set($key, $value);
-        }
-    }
-
-    if ($_GET['id'] === "new") {
-?>
-        <script>
-            window.location = 'index.php?page=vivarium';
-            localStorage.setItem("operation", "new")
-        </script>
-<?php
     } else {
-?>
-        <script>
-            window.location = 'index.php?page=vivarium';
-            localStorage.setItem("operation", "update")
-        </script>
-<?php
+        //Créer un tableau avec les noms des fichiers d'images
+        if ($s->get("path_img") == null) {
+            $dir = "img/snake-img";
+            $fileList = [];
+
+            if(is_dir($dir)) {
+                if ($dh = opendir($dir)) {
+                    while (($file = readdir($dh)) !== false) {
+                        if ($file != "." && $file != "..") {
+                            $fileList[] = $file;
+                        }
+                    }
+                    closedir($dh);
+                }
+            } else {
+                var_dump("le dossier n'existe pas !");
+            }
+
+            // Selection d'un nom de fichier dans le tableau + ajout en BDD
+            $index = array_rand($fileList, 1);
+            $s->set("path_img", $fileList[$index]);
+        }
+
+        $convertMinuteToSeconde = $_POST["duree_vie"] * 60;
+
+        $dateMortTimeStamp = strtotime($_POST["date_naissance"]) + $convertMinuteToSeconde;
+        $dateMortToString = date("d-m-Y H:i:s", $dateMortTimeStamp);
+
+        $date = new DateTime($dateMortToString);
+
+        $s->set("date_mort", $date->format("Y-m-d H:i:s"));
+
+        //Ajout du serpent en BDD
+        foreach ($_POST as $key => $value) {
+            if ($key != "sub_snake") {
+
+                //Conversion du poid en kgs en grammes
+                if ($key == "poids") $value = $value * 1000;
+
+                $s->set($key, $value);
+            }
+        }
+
+        if ($_GET['id'] === "new") {
+    ?>
+            <script>
+                window.location = 'index.php?page=vivarium';
+                localStorage.setItem("operation", "new")
+            </script>
+    <?php
+        } else {
+    ?>
+            <script>
+                window.location = 'index.php?page=vivarium';
+                localStorage.setItem("operation", "update")
+            </script>
+    <?php
+        }
     }
+
 }
 
 // Création d'une date qui indique l'instant présent et qui permet de pré-remplir le champq de la date
@@ -133,13 +157,13 @@ $dateTempToString = date("Y-m-d H:i:s", $dateTemp);
                       <label class="form-label" for="customRange1">Merci d'indiquer le poids</label>
                       <div class="range">
                           <input
-                                  name="poids"
-                                  type="range"
-                                  class="form-range"
-                                  id="customRange1"
-                                  min="1" max="20"
-                                  step="0.1"
-                                  value="<?= $s->get("poids") / 1000 ?>"
+                              name="poids"
+                              type="range"
+                              class="form-range"
+                              id="customRange1"
+                              min="1" max="20"
+                              step="0.1"
+                              value="<?= $s->get("poids") / 1000 ?>"
                           />
                       </div>
                   </div>
@@ -147,11 +171,11 @@ $dateTempToString = date("Y-m-d H:i:s", $dateTemp);
                       <label class="form-label" for="customRange1">Merci d'indiquer son espérance de vie en minute</label>
                       <div class="range">
                           <input
-                                  name="duree_vie"
-                                  type="range" class="form-range"
-                                  id="customRange1" min="2"
-                                  max="15"
-                                  value="<?= $s->get("duree_vie") ?>"
+                              name="duree_vie"
+                              type="range" class="form-range"
+                              id="customRange1" min="2"
+                              max="15"
+                              value="<?= $s->get("duree_vie") ?>"
                           />
                       </div>
                   </div>
