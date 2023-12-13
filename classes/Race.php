@@ -8,7 +8,6 @@ class Race
     private $table = "Race";
     private $id = "";
 
-
     public function __construct($myid = "vide") {
         $this->conn = new Bdd();
         if($myid != "vide" && $myid != "new") $this->id = $myid;

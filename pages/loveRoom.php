@@ -26,6 +26,7 @@
                 <div class="col-2 dice">
                     <img src="/img/others/dice.png" class="card-img-top random-img" alt="" onclick="randomChange(2)"/>
                 </div>
+                <p class="justify-content-center text-center">choix aléatoire</p>
             </div>
         </div>
         <div class="col-2">
@@ -35,6 +36,7 @@
                 <div class="col-2 dice">
                     <img src="/img/others/dice.png" class="card-img-top random-img" alt="" onclick="randomChange(1)"/>
                 </div>
+                <p class="justify-content-center text-center">choix aléatoire</p>
             </div>
         </div>
         <div class="col-2"></div>

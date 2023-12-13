@@ -12,13 +12,11 @@ $race = $conn->select("Animal", $_GET["id"], "id_race");
 $req = $conn->execRequest("SELECT `nom_race` FROM Race WHERE `id_race` = '" . $race . "'");
 $nomRace = $req[0]["nom_race"];
 
-
 //Récupération du serpent enregistré en Session
 $nomSession = $conn->select("Animal", $_GET["idLocalStorage"], "nom");
 $raceIdSession = $conn->select("Animal", $_GET["idLocalStorage"], "id_race");
 $reqSession = $conn->execRequest("SELECT `nom_race` FROM Race WHERE `id_race` = '" . $raceIdSession . "'");
 $nomRaceSession = $reqSession[0]["nom_race"];
-
 
 $data = [
     "title_editSelectSnake" => intval($_GET["gender"]) === 1 ? "Selection femelle" : "Sélection male",

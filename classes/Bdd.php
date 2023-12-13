@@ -55,7 +55,4 @@ class Bdd
         $request = "DELETE FROM `" . $table . "` WHERE `" . $col . "` IS NULL AND delete_at IS NULL";
         $this->conn->query($request);
     }
-
-
-
 }

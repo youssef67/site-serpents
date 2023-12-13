@@ -61,17 +61,6 @@ if (!empty($name) || !empty($race) || !empty($genre)) {
     $_SESSION["save_request"] =  $request;
 
     $request = $request . ' AND delete_at IS NULL ORDER BY nom ASC LIMIT ' . $premier . ', ' . $parPage;
-
-    //Récupération des ID lors du chargement de la 1er pages
-//    $requestId = 'SELECT id_animal FROM Animal WHERE ' . $whereValues . ' AND delete_at IS NULL ORDER BY nom ASC LIMIT 0,' . $parPage;
-//
-//    $animalsId = $connAjax->execRequest($requestId);
-//
-//    $lstAnimalId = [];
-//
-//    foreach ($animalsId as $animal) {
-//        array_push($lstAnimalId, $animal["id_animal"]);
-//    }
 }
 
 $animals = $connAjax->execRequest($request);

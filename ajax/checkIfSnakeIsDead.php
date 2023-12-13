@@ -11,10 +11,8 @@ $query = "SELECT id_animal FROM Animal WHERE id_animal = " . $_GET['id'] . " AND
 
 $res = $connAjax->execRequest($query);
 
-if(empty($res))
-    echo false;
-else
-    echo true;
+if(empty($res)) echo false;
+else echo true;
 
 
 

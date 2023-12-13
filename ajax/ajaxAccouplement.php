@@ -130,7 +130,6 @@ $dateMortDateTime = $date->modify('+' . $dureeVie . ' minutes');
 $dateMortToString = $dateMortDateTime->format('Y-m-d H:i:s');
 $s->set("date_mort", date('Y-m-d H:i:s', strtotime($dateMortToString)));
 
-
 $data = [
     "nomEnfant" => $arr_names[$nameRandomIndex],
 ];

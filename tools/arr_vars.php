@@ -13,5 +13,3 @@ foreach ($races as $race) {
     $arr_race[$race["id_race"]] = $race["nom_race"];
 }
 
-
-

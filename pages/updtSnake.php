@@ -90,7 +90,6 @@ if(isset($_POST["sub_snake"])) {
     <?php
         }
     }
-
 }
 
 // Création d'une date qui indique l'instant présent et qui permet de pré-remplir le champq de la date
@@ -114,7 +113,6 @@ $dateTempToString = date("Y-m-d H:i:s", $dateTemp);
                    class="rounded-circle mt-5"
                    style="width: 100px; height: 100px"
               />
-
               <div class="row mb-4 mt-5">
                   <div class="col">
                       <div class="form-outline">
@@ -134,7 +132,6 @@ $dateTempToString = date("Y-m-d H:i:s", $dateTemp);
                       </select>
                   </div>
               </div>
-
               <div class="row mb-4 mt-5">
                   <div class="col d-flex justify-content-start align-items-center">
                       <label class="form-label" for="naissance" id="input-date" style="margin-right: 20px; width: 50%; white-space: nowrap;">Veuillez définir la date de naissance</label>
@@ -150,8 +147,6 @@ $dateTempToString = date("Y-m-d H:i:s", $dateTemp);
                       </select>
                   </div>
               </div>
-
-
               <div class="row mb-4 mt-5">
                   <div class="col">
                       <label class="form-label" for="customRange1">Merci d'indiquer le poids</label>

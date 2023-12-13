@@ -18,7 +18,6 @@ if ($_GET["idFemelle"] !== "null") {
     }
 }
 
-
 if ($_GET["idMale"] !== "null") {
     $male = $a->selectById($_GET["idMale"]);
 
@@ -28,6 +27,5 @@ if ($_GET["idMale"] !== "null") {
         $data["photoMale"] = $male[0]['path_img'];
     }
 }
-
 
 echo json_encode($data);

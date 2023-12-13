@@ -9,4 +9,3 @@ $a = new \classes\Animal();
 //au moment de l'exécution du script
 $query = "UPDATE Animal SET `delete_at` = NOW() WHERE `date_mort` <= NOW()";
 $connAjax->execRequest($query);
-

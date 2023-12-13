@@ -22,5 +22,4 @@ if (!empty($serpent)) {
 } else
     $data = [];
 
-
 echo json_encode($data);
