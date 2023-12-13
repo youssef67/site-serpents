@@ -57,48 +57,49 @@ $_SESSION["current_url"] = "cimetiere";
 
 <div id="lstSnakes">
 <?php if (count($lstAnimal) > 0) { ?>
-<table class='table align-middle mb-5 bg-white card-body p-5 text-center'>
-    <thead class='bg-light'>
-    <tr>
-        <th>Nom</th>
-        <th>Race</th>
-        <th>Genre</th>
-        <th>date de mort</th>
-    </tr>
-    </thead>
-    <tbody>
+    <table class='table align-middle mb-5 bg-white card-body p-5 text-center'>
+        <thead class='bg-light'>
+        <tr>
+            <th>Nom</th>
+            <th>Race</th>
+            <th>Genre</th>
+            <th>date de mort</th>
+        </tr>
+        </thead>
+        <tbody>
 
-    <?php foreach ($lstAnimal as $animal) {
-        $sexe = $animal["genre"] == 2 ? "mâle" : "femelle";
-    ?>
-    <tr>
-        <td>
-            <div class="d-flex align-items-center">
-                <img src='../img/snake-img/<?= $animal["path_img"] ?>'
-                 class='rounded-circle'
-                alt=''
-                style='width: 55px; height: 55px'
-                />
-                <div class='ms-3'><?= $animal["nom"] ?></div>
-            </div>
-        </td>
-        <td><?= \classes\Race::getRace($animal["id_race"]) ?></td>
-        <td><?= $sexe ?></td>
-        <td><?= date("d-m-Y H:i:s", strtotime($animal["date_mort"])) ?></td>
-    </tr>
+        <?php foreach ($lstAnimal as $animal) {
+            $sexe = $animal["genre"] == 2 ? "mâle" : "femelle";
+        ?>
+        <tr>
+            <td>
+                <div class="d-flex align-items-center">
+                    <img src='../img/snake-img/<?= $animal["path_img"] ?>'
+                     class='rounded-circle'
+                    alt=''
+                    style='width: 55px; height: 55px'
+                    />
+                    <div class='ms-3'><?= $animal["nom"] ?></div>
+                </div>
+            </td>
+            <td><?= \classes\Race::getRace($animal["id_race"]) ?></td>
+            <td><?= $sexe ?></td>
+            <td><?= date("d-m-Y H:i:s", strtotime($animal["date_mort"])) ?></td>
+        </tr>
 
-    <?php }
+        <?php }
 
-    require "components/tableSnakeEnd.php";
-    require "components/pagination.php";
-    ?>
-</div>
-
-
+        require "components/tableSnakeEnd.php";
+        require "components/pagination.php";
+        ?>
+    </div>
 <?php } else { ?>
-
-
-
+    <div class="row p-5 text-center" >
+        <div class="alert alert-success col-md-6 offset-md-3 justify-content-center" role="alert">
+            Pas de serpents morts
+        </div>
+    </div>
 <?php } ?>
+</div>
 
 

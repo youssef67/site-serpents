@@ -41,7 +41,6 @@ $lstAnimal = $a->selectAll($premier, $parPage);
 //Si Serpents mort = true
 //Si serpents vivant = false
 $_SESSION["current_url"] = "vivarium";
-
 ?>
 <!-- Mise en place de la bannière afin de confirmer la modification -->
 <?php if (isset($_GET["update"]) && $_GET["update"] === true) { ?>
@@ -79,8 +78,6 @@ $_SESSION["current_url"] = "vivarium";
     </div>
     <div class="col-4"></div>
 </div>
-
-
 <!-- Mise en place des filtres -->
 <!-- Recherche par nom -->
 <!-- Recherche par genre -->
@@ -120,8 +117,6 @@ $_SESSION["current_url"] = "vivarium";
             <div class="col inputFilterFormEmpty"></div>
         </div>
     </form>
-
-
 <div class="row p-5 text-center confirmSelectedSnake" style="display: none">
     <div class="alert alert-success col-md-6 offset-md-3 justify-content-center content-confirmSelectedSnake" role="alert">
     </div>
@@ -150,10 +145,6 @@ $_SESSION["current_url"] = "vivarium";
     }
     require "components/tableSnakeEnd.php";
     require "components/pagination.php";
-
-    ?>
-</div>
-<?php
 } else { ?>
         <div class="row p-5 text-center" >
             <div class="alert alert-success col-md-6 offset-md-3 justify-content-center" role="alert">
@@ -161,3 +152,4 @@ $_SESSION["current_url"] = "vivarium";
             </div>
         </div>
 <?php } ?>
+</div>

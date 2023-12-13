@@ -31,7 +31,7 @@
                         <a class="nav-link" href="index.php?page=cimetiere">Cimetière</a>
                     </li>
                 </ul>
-                <?php if(isset($_REQUEST["page"]) && $_REQUEST["page"] == "vivarium") { ?>
+                <?php if(isset($_REQUEST["page"]) && ($_REQUEST["page"] == "vivarium" || $_REQUEST["page"] == "loveRoom" || $_REQUEST["page"] == "cimetiere")) { ?>
                     <ul class="navbar-nav mb-2 mb-lg-0">
                         <li class="nav-item">
                             <!-- Button trigger modal -->

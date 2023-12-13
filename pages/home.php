@@ -13,7 +13,7 @@
         <img src="/img/others/vivarium.png" class="card-img-top" alt="Fissure in Sandstone" style="width: 80%"/>
         <div class="card-body text-center" style="width: 80%">
             <h5 class="card-title">Le vivarium</h5>
-            <p class="card-text">Liste de l'ensemble des serpents</p>
+            <p class="card-text">Liste des serpents</p>
             <a href="index.php?page=vivarium" class="btn btn-primary">Accéder au vivarium</a>
         </div>
     </div>
@@ -21,7 +21,7 @@
         <img src="/img/others/love-room.png" class="card-img-top" alt="Fissure in Sandstone" style="width: 80%"/>
         <div class="card-body text-center" style="width: 80%">
             <h5 class="card-title">La love room</h5>
-            <p class="card-text">Lieux de transmission de gênes</p>
+            <p class="card-text">Lieux de transmission de gènes</p>
             <a href="index.php?page=loveRoom" class="btn btn-primary">Se rincer les yeux</a>
         </div>
     </div>
@@ -29,8 +29,8 @@
         <img src="/img/others/cimetiere.png" class="card-img-top" alt="Fissure in Sandstone" style="width: 80%"/>
         <div class="card-body text-center" style="width: 80%">
             <h5 class="card-title">Le Cimetière</h5>
-            <p class="card-text">Lieux pour le repos eternel</p>
-            <a href="index.php?page=cimetiere" class="btn btn-primary">Se souvenir des meilleurs</a>
+            <p class="card-text">Lieux du repos eternel</p>
+            <a href="index.php?page=cimetiere" class="btn btn-primary">Les premiers seront les derniers</a>
         </div>
     </div>
 </div>

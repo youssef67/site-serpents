@@ -43,6 +43,23 @@ class Animal
         return $res;
     }
 
+    public function selectSnakeLiveOrDeadById($id) {
+        $res = $this->conn->execRequest("SELECT * FROM `" . $this->table . "` WHERE id_animal LIKE " . $id);
+        return $res;
+    }
+
+    public function selectParentById($id) {
+        $res = $this->conn->execRequest("SELECT * FROM `" . $this->table . "` WHERE id_animal LIKE " . $id);
+        return $res;
+    }
+
+    public function selectAllByIdParent($id, $gender) {
+        $typParent = $gender === 1 ? "id_mere" : "id_pere";
+
+        $res = $this->conn->execRequest("SELECT * FROM `" . $this->table . "` WHERE " . $typParent ." LIKE " . $id);
+        return $res;
+    }
+
     public function get($col) {
         return $this->conn->select($this->table, $this->id, $col);
     }

@@ -15,19 +15,19 @@ $mort = "mort";
 $vivant = "vivant";
 
 // Récupération des races disponibles + id correspondant
-$races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
+//$races = $conn->execRequest("SELECT `id_race`, `nom_race` FROM `Race`");
 
 //Serpent sur nous allons présenter l'arbre généalogique
-$serpentCible = $a->selectById($_GET['id']);
+$serpentCible = $a->selectSnakeLiveOrDeadById($_GET['id']);
 
 //Recherche du pere
-$pere = $a->selectById($serpentCible[0]["id_pere"]);
+$pere = is_null($serpentCible[0]["id_pere"]) ? [] : $a->selectParentById($serpentCible[0]["id_pere"]);
+
 //Recherche de la mere
-$mere = $a->selectById($serpentCible[0]["id_mere"]);
-
-
-
-var_dump($pere);
+$mere = is_null($serpentCible[0]["id_mere"]) ? [] : $a->selectParentById($serpentCible[0]["id_mere"]);
+//
+////Enfants
+$enfants = $a->selectAllByIdParent($_GET["id"], $serpentCible[0]["genre"]);
 
 ?>
 <div class="row mt-5 text-center">
@@ -40,10 +40,9 @@ var_dump($pere);
 </div>
 <!-- ///////// Listing des parents ////////////-->
 <div class="row mt-5 text-center">
-    <div class="col ">
+    <div class="col">
         <h4 class="col-3 fancy">Parents</h4>
-        <div id="lstParents">
-            <table class="table align-middle mb-0 bg-white card-body p-5 text-center">
+            <table class="table align-middle mb-0 bg-white card-body mt-5 p-5 text-center">
                 <thead class='bg-light'>
                 <tr>
                     <th></th>
@@ -58,39 +57,85 @@ var_dump($pere);
                 <tbody>
 <!--                ////// Pere //////-->
                 <tr>
-                    <td>Père</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img src="../img/snake-img/<?= $pere[0]["path_img"] ?>" class='rounded-circle' style='width: 55px; height: 55px'/>
-                            <div class='ms-3'><?= $pere[0]["nom"] ?></div>
-                        </div>
-                    </td>
-                    <td><?= \classes\Race::getRace($pere[0]["id_race"]) ?></td>
-                    <td><?= $pere[0]["poids"] ?></td>
-                    <td><?= date("d-m-Y H:i:s", strtotime($pere[0]["date_naissance"])) ?></td>
-                    <td><?= empty($pere[0]["delete_at"]) ? $vivant :  $mort ?></td>
-                    <td><a href="index.php?page=famille&id=<?= $pere[0]["id_animal"] ?>" type="button" class="btn btn-list" style="background-color: #F27438;">Voir l'arbre généalogique</a></td>
+                    <?php if (!empty($pere)) { ?>
+                        <td>Père</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="../img/snake-img/<?= $pere[0]["path_img"] ?>" class='rounded-circle' style='width: 55px; height: 55px'/>
+                                <div class='ms-3'><?= $pere[0]["nom"] ?></div>
+                            </div>
+                        </td>
+                        <td><?= \classes\Race::getRace($pere[0]["id_race"]) ?></td>
+                        <td><?= $pere[0]["poids"] ?></td>
+                        <td><?= date("d-m-Y H:i:s", strtotime($pere[0]["date_naissance"])) ?></td>
+                        <td><?= empty($pere[0]["delete_at"]) ? $vivant :  $mort ?></td>
+                        <td><a href="index.php?page=famille&id=<?= $pere[0]["id_animal"] ?>" type="button" class="btn btn-list" style="background-color: #F27438;">Voir l'arbre généalogique</a></td>
+                    <?php } else { ?>
+                        <td colspan="7" style="font-weight: bold; font-size: 15px">Père inconnu</td>
+                    <?php } ?>
                 </tr>
 <!--                ////// Mere //////-->
                 <tr>
-                    <td>Mère</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img src="../img/snake-img/<?= $mere[0]["path_img"] ?>" class='rounded-circle' style='width: 55px; height: 55px'/>
-                            <div class='ms-3'><?= $mere[0]["nom"] ?></div>
-                        </div>
-                    </td>
-                    <td><?= \classes\Race::getRace($mere[0]["id_race"]) ?></td>
-                    <td><?= $mere[0]["poids"] ?></td>
-                    <td><?= date("d-m-Y H:i:s", strtotime($mere[0]["date_naissance"])) ?></td>
-                    <td><?= empty($mere[0]["delete_at"]) ? $vivant . "e" :  $mort ?></td>
-                    <td><a href="index.php?page=famille&id=<?= $mere[0]["id_animal"] ?>" type="button" class="btn btn-list" style="background-color: #F27438;">Voir l'arbre généalogique</a></td>
+                    <?php if (!empty($mere)) { ?>
+                        <td>Mère</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="../img/snake-img/<?= $mere[0]["path_img"] ?>" class='rounded-circle' style='width: 55px; height: 55px'/>
+                                <div class='ms-3'><?= $mere[0]["nom"] ?></div>
+                            </div>
+                        </td>
+                        <td><?= \classes\Race::getRace($mere[0]["id_race"]) ?></td>
+                        <td><?= $mere[0]["poids"] ?></td>
+                        <td><?= date("d-m-Y H:i:s", strtotime($mere[0]["date_naissance"])) ?></td>
+                        <td><?= empty($mere[0]["delete_at"]) ? $vivant . "e" :  $mort ?></td>
+                        <td><a href="index.php?page=famille&id=<?= $mere[0]["id_animal"] ?>" type="button" class="btn btn-list" style="background-color: #F27438;">Voir l'arbre généalogique</a></td>
+                    <?php } else { ?>
+                        <td colspan="7" style="font-weight: bold; font-size: 15px">Mère inconnue</td>
+                    <?php } ?>
                 </tr>
                 </tbody>
             </table>
-        </div>
     </div>
 </div>
-<div class="row mt-5 text-center">
+<!--                ////// Enfants //////-->
+<div class="row mt-5 text-center mb-5">
     <h4 class="col-3 fancy">Enfants</h4>
+<?php if (count($enfants) > 0) { ?>
+        <table class="table align-middle mb-0 bg-white card-body mt-5 p-5 text-center">
+            <thead class='bg-light'>
+            <tr>
+                <th>Nom</th>
+                <th>Race</th>
+                <th>Sexe</th>
+                <th>Poids</th>
+                <th>Date de naissance</th>
+                <th>Etat</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+           <?php foreach ($enfants as $enfant) { ?>
+                   <tr>
+                       <td>
+                           <div class="d-flex align-items-center">
+                               <img src="../img/snake-img/<?= $enfant["path_img"] ?>" class='rounded-circle' style='width: 55px; height: 55px'/>
+                               <div class='ms-3'><?= $enfant["nom"] ?></div>
+                           </div>
+                       </td>
+                       <td><?= \classes\Race::getRace($enfant["id_race"]) ?></td>
+                       <td><?= $enfant["genre"] === 1 ? "Femelle" : "Mâle" ?></td>
+                       <td><?= $enfant["poids"] ?></td>
+                       <td><?= date("d-m-Y H:i:s", strtotime($enfant["date_naissance"])) ?></td>
+                       <td><?= empty($enfant["delete_at"]) ? $vivant . "e" :  $mort ?></td>
+                       <td><a href="index.php?page=famille&id=<?= $enfant["id_animal"] ?>" type="button" class="btn btn-list" style="background-color: #F27438;">Voir l'arbre généalogique</a></td>
+                   </tr>
+            <?php } ?>
+            </tbody>
+        </table>
+<?php }
+else { ?>
+        <div class="row">
+            <p class="mt-4 p-5" style="font-weight: bold; font-size: 20px">Ce serpent n'a pas d'enfants</p>
+        </div>
+<?php } ?>
 </div>

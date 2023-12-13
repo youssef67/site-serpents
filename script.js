@@ -1,8 +1,3 @@
-// localStorage.removeItem("femelleIdSelectionne")
-// localStorage.removeItem("maleIdSelectionne")
-
-console.log(localStorage)
-
 let feuVert = document.getElementById("feuVertLove")
 
 if (localStorage.getItem("femelleIdSelectionne") !== null
@@ -26,9 +21,6 @@ tippy("#btn-supprimerSerpent", {
     content: "Supprimer le serpent"
 });
 
-function getFamille() {
-    console.log("toto")
-}
 function displayNotif(type) {
     let operation = localStorage.getItem("operation");
 

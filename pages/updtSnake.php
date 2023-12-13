@@ -94,7 +94,7 @@ if(isset($_POST["sub_snake"])) {
 }
 
 // Création d'une date qui indique l'instant présent et qui permet de pré-remplir le champq de la date
-$dateTemp = strtotime("now");
+$dateTemp = strtotime("NOW");
 $dateTempToString = date("Y-m-d H:i:s", $dateTemp);
 
 ?>
@@ -168,7 +168,7 @@ $dateTempToString = date("Y-m-d H:i:s", $dateTemp);
                       </div>
                   </div>
                   <div class="col">
-                      <label class="form-label" for="customRange1">Merci d'indiquer son espérance de vie en minute</label>
+                      <label class="form-label" for="customRange1">Merci d'indiquer son espérance de vie en minutes</label>
                       <div class="range">
                           <input
                               name="duree_vie"

@@ -13,7 +13,6 @@ class Bdd
     }
 
     public function execRequest($req)  {
-
         $reqStart = explode(' ', trim($req));
         $typeRequest = $reqStart[0];
 

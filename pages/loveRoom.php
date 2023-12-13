@@ -10,7 +10,7 @@
     <h3 class="col-3 fancy">
         La chambre nuptiale
     </h3>
-    <p class="mt-4" style="font-size: 1.5em">Un lieu de plaisir et de rencontre innattendu</p>
+    <p class="mt-4" style="font-size: 1.5em">Un lieu de plaisir et de rencontres</p>
     <p style="font-size: 1.5em">Si pas de papillons dans le ventre, laissez le hasard faire les choses !!!</p>
 </div>
 <div class="row text-center" style="display: none" id="info">
